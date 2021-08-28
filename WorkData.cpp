@@ -31,8 +31,59 @@ void WorkData(int confd,int i,FD &MyFd)
 	
 	if(num1 == 1)
 	{
-		
-	
+        MYSQL mysql;
+        MYSQL_RES *result = NULL;
+        MYSQL_ROW row;
+        
+        char sqlStr[1024]={0};
+        
+        mysql_init(&mysql);
+        if(mysql_real_connect(&mysql,"localhost","root",NULL,"chat",0,NULL,0)==NULL)
+        {
+            printf("connect error: %s\n",mysql_error(&mysql));
+            return ;
+        }
+        else
+            printf("connected\n");
+
+        char buf2[1024]={0},buf3[1024]={0},buf4[1024]={0},buf5[1024]={0};
+
+        sscanf(buf,"%[^|]%*[|]%[^|]%*[|]%[^|]%*[|]%[^|]",buf2,buf3,buf4,buf5);
+        //printf("%s\n%s\n%s\n%s\n",buf2,buf3,buf4,buf5);
+        
+        sprintf(sqlStr,"insert into user values(NULL,'%s','%s','%s',0)",buf2,buf3,buf4);
+        //printf("sqlStr=%s\n",sqlStr);
+        
+        if(mysql_query(&mysql,sqlStr) != 0)
+        {
+            printf("query error: %s\n",mysql_error(&mysql));
+            return ;
+        }
+        
+        sprintf(sqlStr,"select * from user order by id desc limit 1");
+        //printf("sqlStr=%s\n",sqlStr);
+        
+        if(mysql_query(&mysql,sqlStr) != 0)
+        {
+            printf("query error: %s\n",mysql_error(&mysql));
+            return ;
+        }
+        
+        result=mysql_store_result(&mysql);
+        row = mysql_fetch_row(result);
+        if(row)
+        {
+            write(confd,"#001|0|regSucess",16);
+            MyFd.clifd[i].second=row[0];
+            //std::cout<<MyFd.clifd[i].second<<std::endl;
+        }
+        else
+        {
+            write(confd,"#001|1|regFailed",16);
+        }
+
+        mysql_free_result(result);
+        mysql_close(&mysql);
 	}
 	else if(num1 == 2)
 	{

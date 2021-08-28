@@ -1,0 +1,1 @@
+/usr/bin/c++     CMakeFiles/Server.dir/FD.cpp.o CMakeFiles/Server.dir/Init.cpp.o CMakeFiles/Server.dir/MyServer.cpp.o CMakeFiles/Server.dir/WorkData.cpp.o CMakeFiles/Server.dir/c.c.o  -o Server  -L/usr/lib/gcc/x86_64-linux-gnu/9 /usr/lib/x86_64-linux-gnu/libmysqlclient.so 

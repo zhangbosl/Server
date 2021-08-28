@@ -1,0 +1,3 @@
+/home/lingxi/documents/code/Server/Server/build/CMakeFiles/rebuild_cache.dir
+/home/lingxi/documents/code/Server/Server/build/CMakeFiles/edit_cache.dir
+/home/lingxi/documents/code/Server/Server/build/CMakeFiles/Server.dir

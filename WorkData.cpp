@@ -38,25 +38,30 @@ void WorkData(int confd,int i,FD &MyFd)
 	{
 	
 		sscanf(buf,"%[^|]%*[|]%[^|]%*[|]%s",buf1,buf2,buf3);
-		strcat(str,"select * from user where id =");
+		strcat(str,"select * from user where id = '");
 		strcat(str,buf2);
-		strcat(str," and password =");
+		strcat(str,"' and password = '");
 		strcat(str,buf3);
-		strcat(str,";");
+		strcat(str,"';");
 		mysql_query(&mysql,str);
-		result=mysql_store_result(&mysql);
+		result = mysql_store_result(&mysql);
 		row = mysql_fetch_row(result);
+		//sucess
 		if(row)
-		{
-			write(confd,"-1",2);
-		}
-		else
 		{
 			write(confd,"0",1);
 			MyFd.clifd[i].second = buf2;
-			
-			mysql_query(&mysql,"update user set online = 1;");
-			
+			memset(str,0,sizeof(str));
+			strcat(str,"update user set online = 1 where id = '");
+			strcat(str,row[0]);
+			printf("%s\n",row[0]);
+			strcat(str,"';");
+			mysql_query(&mysql,str);
+			//mysql_query(&mysql,);
+		}
+		else
+		{
+			write(confd,"-1",2);
 		}
 	}
 
@@ -64,19 +69,6 @@ void WorkData(int confd,int i,FD &MyFd)
 	/*
 	
 	
-	//mysql_query(&mysql,"INSERT INTO Table_User(account,password)VALUES('张三','0001'),('孙六','0004');");
-
-	
-	if(result==NULL)
-	{
-		printf("result error\n");
-	}
-	row = mysql_fetch_row(result);
-
-	if(row)
-	{
-		printf("yong hu yi cun zai");
-	}
 	
 	write(confd,"ok",2);
 	*/

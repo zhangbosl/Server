@@ -49,6 +49,7 @@ void WorkData(int confd,int i,FD &MyFd)
 		//sucess
 		if(row)
 		{
+		
 			write(confd,"0",1);
 			MyFd.clifd[i].second = buf2;
 			memset(str,0,sizeof(str));

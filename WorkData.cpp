@@ -54,7 +54,7 @@ void WorkData(int confd,int i,FD &MyFd)
 			memset(str,0,sizeof(str));
 			strcat(str,"update user set online = 1 where id = '");
 			strcat(str,row[0]);
-			printf("%s\n",row[0]);
+			//printf("%s\n",row[0]);
 			strcat(str,"';");
 			mysql_query(&mysql,str);
 			//mysql_query(&mysql,);

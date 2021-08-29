@@ -67,7 +67,7 @@ void WorkData(int confd,int i,FD &MyFd)
         if(row)
         {
             write(confd,"#001|0|regSucess",16);
-            MyFd.clifd[i].second=row[0];
+            //MyFd.clifd[i].second=row[0];
             //std::cout<<MyFd.clifd[i].second<<std::endl;
         }
         else
@@ -82,11 +82,8 @@ void WorkData(int confd,int i,FD &MyFd)
 	{
 	
 		sscanf(buf,"%[^|]%*[|]%[^|]%*[|]%s",buf1,buf2,buf3);
-		strcat(str,"select * from user where id = '");
-		strcat(str,buf2);
-		strcat(str,"' and password = '");
-		strcat(str,buf3);
-		strcat(str,"';");
+		sprintf(str,"%s%s%s%s%s","select * from user where id = '",buf2,"' and password = '",buf3,"';");
+		printf("%s\n",str);
 		mysql_query(&mysql,str);
 		result = mysql_store_result(&mysql);
 		row = mysql_fetch_row(result);
@@ -97,12 +94,9 @@ void WorkData(int confd,int i,FD &MyFd)
 			write(confd,"0",1);
 			MyFd.clifd[i].second = buf2;
 			memset(str,0,sizeof(str));
-			strcat(str,"update user set online = 1 where id = '");
-			strcat(str,row[0]);
-			//printf("%s\n",row[0]);
-			strcat(str,"';");
+			sprintf(str,"%s%s%s","update user set online = 1 where id = '",row[0],"';");
+			printf("%s\n",str);
 			mysql_query(&mysql,str);
-			//mysql_query(&mysql,);
 		}
 		else
 		{

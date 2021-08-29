@@ -23,30 +23,25 @@ void WorkData(int confd,int i,FD &MyFd)
 	
 	
 	MYSQL mysql;
-        MYSQL_RES *result = NULL;
-        MYSQL_ROW row;
-        
-        
-        mysql_init(&mysql);
-        if(mysql_real_connect(&mysql,"localhost","root",NULL,"chat",0,NULL,0)==NULL)
-        {
-            printf("connect error: %s\n",mysql_error(&mysql));
-            return ;
-        }
-        else
-            printf("connected\n");
+    MYSQL_RES *result = NULL;
+    MYSQL_ROW row;
+    
+    
+    mysql_init(&mysql);
+    if(mysql_real_connect(&mysql,"localhost","root",NULL,"chat",0,NULL,0)==NULL)
+    {
+        printf("connect error: %s\n",mysql_error(&mysql));
+        return ;
+    }
+    else
+        printf("connected\n");
 
 	
 	if(num1 == 1)
 	{
-    	
-
-        sscanf(buf,"%[^|]%*[|]%[^|]%*[|]%[^|]%*[|]%[^|]",buf2,buf3,buf4,buf5);
-        //printf("%s\n%s\n%s\n%s\n",buf2,buf3,buf4,buf5);
+        sscanf(buf,"%[^|]%*[|]%[^|]%*[|]%[^|]%*[|]%[^|]%*[|]%[^|]\n",buf1,buf2,buf3,buf4,buf5);
         
-        sprintf(sqlStr,"insert into user values(NULL,'%s','%s','%s',0)",buf2,buf3,buf4);
-        //printf("sqlStr=%s\n",sqlStr);
-        
+        sprintf(sqlStr,"insert into user (password,question,answer,online) values('%s','%s','%s',0)",buf3,buf4,buf5);
         if(mysql_query(&mysql,sqlStr) != 0)
         {
             printf("query error: %s\n",mysql_error(&mysql));
@@ -54,8 +49,6 @@ void WorkData(int confd,int i,FD &MyFd)
         }
         
         sprintf(sqlStr,"select * from user order by id desc limit 1");
-        //printf("sqlStr=%s\n",sqlStr);
-        
         if(mysql_query(&mysql,sqlStr) != 0)
         {
             printf("query error: %s\n",mysql_error(&mysql));
@@ -64,11 +57,18 @@ void WorkData(int confd,int i,FD &MyFd)
         
         result=mysql_store_result(&mysql);
         row = mysql_fetch_row(result);
-        if(row)
+        
+        if(row&&row[1]==buf3&&row[2]==buf4&&row[3]==buf5)
         {
             write(confd,"#001|0|regSucess",16);
-            //MyFd.clifd[i].second=row[0];
-            //std::cout<<MyFd.clifd[i].second<<std::endl;
+            MyFd.clifd[i].second=row[0];
+        
+            sprintf(sqlStr,"insert into uinfor (id,name) values('%s','%s')",row[0],buf1);
+            if(mysql_query(&mysql,sqlStr) != 0)
+            {
+                printf("query error: %s\n",mysql_error(&mysql));
+                return ;
+            }
         }
         else
         {
@@ -76,7 +76,6 @@ void WorkData(int confd,int i,FD &MyFd)
         }
 
         mysql_free_result(result);
-        
 	}
 	else if(num1 == 2)
 	{
@@ -223,6 +222,48 @@ void WorkData(int confd,int i,FD &MyFd)
 			write(confd,"-1",2);
 		}
 	}
+	else if(num1 == 12)
+    {
+        sscanf(buf,"%[^|]%*[|]%[^|]\n",buf1,buf2);
+		sprintf(sqlStr,"UPDATE uinfor SET name = '%s' WHERE id = '%s';",buf2,MyFd.clifd[i].second.c_str());	
+		printf("%s\n",sqlStr);
+		if(!mysql_query(&mysql,str))
+		{
+			write(confd,"0",1);
+		}
+		else
+		{
+			write(confd,"1",1);
+		}
+    }
+	else if(num1 == 15)
+    {
+        sscanf(buf,"%[^|]%*[|]%[^|]\n",buf1,buf2);
+		sprintf(sqlStr,"UPDATE uinfor SET birth = '%s' WHERE id = '%s';",buf2,MyFd.clifd[i].second.c_str());	
+		printf("%s\n",sqlStr);
+		if(!mysql_query(&mysql,str))
+		{
+			write(confd,"0",1);
+		}
+		else
+		{
+			write(confd,"1",1);
+		}
+    }
+	else if(num1 == 16)
+    {
+        sscanf(buf,"%[^|]%*[|]%[^|]\n",buf1,buf2);
+		sprintf(sqlStr,"UPDATE uinfor SET sign = '%s' WHERE id = '%s';",buf2,MyFd.clifd[i].second.c_str());	
+		printf("%s\n",sqlStr);
+		if(!mysql_query(&mysql,str))
+		{
+			write(confd,"0",1);
+		}
+		else
+		{
+			write(confd,"1",1);
+		}
+    }
 
 	mysql_close(&mysql);
 

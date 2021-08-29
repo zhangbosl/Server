@@ -82,6 +82,7 @@ void WorkData(int confd,int i,FD &MyFd)
 	{
 	
 		sscanf(buf,"%[^|]%*[|]%[^|]%*[|]%s",buf1,buf2,buf3);
+		memset(str,0,sizeof(str));
 		sprintf(str,"%s%s%s%s%s","select * from user where id = '",buf2,"' and password = '",buf3,"';");
 		printf("%s\n",str);
 		mysql_query(&mysql,str);
@@ -90,7 +91,6 @@ void WorkData(int confd,int i,FD &MyFd)
 		//sucess
 		if(row)
 		{
-		
 			write(confd,"0",1);
 			MyFd.clifd[i].second = buf2;
 			memset(str,0,sizeof(str));
@@ -106,17 +106,27 @@ void WorkData(int confd,int i,FD &MyFd)
 	}
 	else if(num1 == 3)
 	{
-	
-	
+		sscanf(buf,"%[^|]%*[|]%s",buf1,buf2);
+		memset(str,0,sizeof(str));
+		sprintf(str,"%s%s%s","select * from user where id = '",buf2,"';");
+		printf("%s\n",str);
+		mysql_query(&mysql,str);
+		result = mysql_store_result(&mysql);
+		row = mysql_fetch_row(result);		
+		if(row)
+		{
+			memset(str,0,sizeof(str));
+			sprintf(str,"%s%s","0|",row[2]);
+			write(confd,str,strlen(str));
+		}
+		else
+		{
+			write(confd,"-1",2);
+		}
 	}
 
 	mysql_close(&mysql);
-	/*
-	
-	
-	
-	write(confd,"ok",2);
-	*/
+
 	
 }
 //g++ MyServer.cpp Init.cpp FD.cpp WorkData.cpp -L/usr/lib/x86_64-linux-gnu/mysql -lmysqlclient

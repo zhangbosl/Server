@@ -193,6 +193,36 @@ void WorkData(int confd,int i,FD &MyFd)
 			write(confd,"-1",2);
 		}
 	}
+	else if(num1 == 11)
+	{
+		//buf2 ->password buf3->newquestion buf4-> new answer
+		sscanf(buf,"%[^|]%*[|]%[^|]%*[|]%[^|]%*[|]%s",buf1,buf2,buf3,buf4);
+		memset(str,0,sizeof(str));
+		sprintf(str,"%s%s%s%s%s","select * from user where id = '",MyFd.clifd[i].second.c_str(),"' and password = '",buf2,"';");
+		printf("%s\n",str);
+		mysql_query(&mysql,str);
+		result = mysql_store_result(&mysql);
+		row = mysql_fetch_row(result);
+		if(row)
+		{
+			memset(str,0,sizeof(str));
+			sprintf(str,"%s%s%s%s%s%s%s","update user set question = '",buf3,"' , answer = '",buf4,"' where id ='",MyFd.clifd[i].second.c_str(),"';");
+			printf("%s\n",str);
+			if(!mysql_query(&mysql,str))
+			{
+				write(confd,"0",1);
+			}
+			else
+			{
+				write(confd,"-1",2);
+			}
+		}
+		else
+		{
+		
+			write(confd,"-1",2);
+		}
+	}
 
 	mysql_close(&mysql);
 

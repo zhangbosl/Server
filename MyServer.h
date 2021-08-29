@@ -11,8 +11,6 @@
 #include <string>
 #include "FD.h"
 #include "WorkData.h"
-
-struct sockaddr_in InitSock();
-int InitBind(int,sockaddr_in &);
+#include "Init.h"
 
 #endif

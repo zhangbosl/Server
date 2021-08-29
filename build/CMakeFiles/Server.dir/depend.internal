@@ -8,8 +8,11 @@ CMakeFiles/Server.dir/Init.cpp.o
  /home/lingxi/documents/code/Server1/Init.cpp
  /home/lingxi/documents/code/Server1/Init.h
 CMakeFiles/Server.dir/MyServer.cpp.o
+ /home/lingxi/documents/code/Server1/FD.h
+ /home/lingxi/documents/code/Server1/Init.h
  /home/lingxi/documents/code/Server1/MyServer.cpp
  /home/lingxi/documents/code/Server1/MyServer.h
+ /home/lingxi/documents/code/Server1/WorkData.h
 CMakeFiles/Server.dir/WorkData.cpp.o
  /home/lingxi/documents/code/Server1/FD.h
  /home/lingxi/documents/code/Server1/WorkData.cpp

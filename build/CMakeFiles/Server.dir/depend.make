@@ -7,8 +7,11 @@ CMakeFiles/Server.dir/FD.cpp.o: ../FD.h
 CMakeFiles/Server.dir/Init.cpp.o: ../Init.cpp
 CMakeFiles/Server.dir/Init.cpp.o: ../Init.h
 
+CMakeFiles/Server.dir/MyServer.cpp.o: ../FD.h
+CMakeFiles/Server.dir/MyServer.cpp.o: ../Init.h
 CMakeFiles/Server.dir/MyServer.cpp.o: ../MyServer.cpp
 CMakeFiles/Server.dir/MyServer.cpp.o: ../MyServer.h
+CMakeFiles/Server.dir/MyServer.cpp.o: ../WorkData.h
 
 CMakeFiles/Server.dir/WorkData.cpp.o: ../FD.h
 CMakeFiles/Server.dir/WorkData.cpp.o: ../WorkData.cpp

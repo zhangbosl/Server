@@ -146,6 +146,20 @@ void WorkData(int confd,int i,FD &MyFd)
 			write(confd,"-1",2);
 		}
 	}
+	else if(num1 == 5)
+	{
+		memset(str,0,sizeof(str));
+		sprintf(str,"%s%s%s","delete from user where id ='",MyFd.clifd[i].second.c_str(),"';");	
+		printf("%s\n",str);
+		if(!mysql_query(&mysql,str))
+		{
+			write(confd,"0",1);
+		}
+		else
+		{
+			write(confd,"-1",2);
+		}
+	}
 
 	mysql_close(&mysql);
 

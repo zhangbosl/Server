@@ -16,26 +16,16 @@ void WorkData(int confd,int i,FD &MyFd)
 	}
 	//如果读入了数据在buf中
 	printf("buf=%s\n",buf);
-	char buf1[1024]={0},buf2[1024]={0},buf3[1024]={0},str[1024]={0};
+	char buf1[1024]={0},buf2[1024]={0},buf3[1024]={0},buf4[1024]={0},buf5[1024]={0},str[1024]={0},sqlStr[1024]={0};
 	
 	sscanf(buf,"%[^|]",buf1);
 	int num1=atoi(buf1);
 	
 	
 	MYSQL mysql;
-	MYSQL_RES *result=NULL;
-	MYSQL_ROW row;
-	mysql_init(&mysql);
-	mysql_real_connect(&mysql,"127.0.0.1","root","root","chat",0,NULL,0);
-	
-	
-	if(num1 == 1)
-	{
-    	MYSQL mysql;
         MYSQL_RES *result = NULL;
         MYSQL_ROW row;
         
-        char sqlStr[1024]={0};
         
         mysql_init(&mysql);
         if(mysql_real_connect(&mysql,"localhost","root",NULL,"chat",0,NULL,0)==NULL)
@@ -46,7 +36,10 @@ void WorkData(int confd,int i,FD &MyFd)
         else
             printf("connected\n");
 
-        char buf2[1024]={0},buf3[1024]={0},buf4[1024]={0},buf5[1024]={0};
+	
+	if(num1 == 1)
+	{
+    	
 
         sscanf(buf,"%[^|]%*[|]%[^|]%*[|]%[^|]%*[|]%[^|]",buf2,buf3,buf4,buf5);
         //printf("%s\n%s\n%s\n%s\n",buf2,buf3,buf4,buf5);
@@ -116,7 +109,7 @@ void WorkData(int confd,int i,FD &MyFd)
 			write(confd,"-1",2);
 		}
 	}
-	else if(num == 3)
+	else if(num1 == 3)
 	{
 	
 	

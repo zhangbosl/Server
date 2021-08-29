@@ -7,16 +7,8 @@
 #include <cstring>
 #include <unistd.h>
 #include <string>
-class FD
-{
-public:
-	std::vector<std::pair<int,std::string>>clifd;
-	int maxfd = 0;
-	int lisfd;
-	fd_set allset;
-	void set(int);
-	void zero();
-};
+#include "FD.h"
+
 void WorkData(int,int ,FD &);
 
 

@@ -48,10 +48,10 @@ RM = /usr/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/lingxi/documents/code/Server/Server
+CMAKE_SOURCE_DIR = /home/lingxi/documents/code/Server1
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/lingxi/documents/code/Server/Server/build
+CMAKE_BINARY_DIR = /home/lingxi/documents/code/Server1/build
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -80,9 +80,9 @@ edit_cache/fast: edit_cache
 
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/lingxi/documents/code/Server/Server/build/CMakeFiles /home/lingxi/documents/code/Server/Server/build/CMakeFiles/progress.marks
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/lingxi/documents/code/Server1/build/CMakeFiles /home/lingxi/documents/code/Server1/build/CMakeFiles/progress.marks
 	$(MAKE) -f CMakeFiles/Makefile2 all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/lingxi/documents/code/Server/Server/build/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/lingxi/documents/code/Server1/build/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
@@ -231,33 +231,6 @@ WorkData.cpp.s:
 	$(MAKE) -f CMakeFiles/Server.dir/build.make CMakeFiles/Server.dir/WorkData.cpp.s
 .PHONY : WorkData.cpp.s
 
-c.o: c.c.o
-
-.PHONY : c.o
-
-# target to build an object file
-c.c.o:
-	$(MAKE) -f CMakeFiles/Server.dir/build.make CMakeFiles/Server.dir/c.c.o
-.PHONY : c.c.o
-
-c.i: c.c.i
-
-.PHONY : c.i
-
-# target to preprocess a source file
-c.c.i:
-	$(MAKE) -f CMakeFiles/Server.dir/build.make CMakeFiles/Server.dir/c.c.i
-.PHONY : c.c.i
-
-c.s: c.c.s
-
-.PHONY : c.s
-
-# target to generate assembly for a file
-c.c.s:
-	$(MAKE) -f CMakeFiles/Server.dir/build.make CMakeFiles/Server.dir/c.c.s
-.PHONY : c.c.s
-
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -279,9 +252,6 @@ help:
 	@echo "... WorkData.o"
 	@echo "... WorkData.i"
 	@echo "... WorkData.s"
-	@echo "... c.o"
-	@echo "... c.i"
-	@echo "... c.s"
 .PHONY : help
 
 

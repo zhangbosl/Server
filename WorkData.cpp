@@ -116,7 +116,7 @@ void WorkData(int confd,int i,FD &MyFd)
 			write(confd,"-1",2);
 		}
 	}
-	else if(num == 3)
+	else if(num1 == 3)
 	{
 	
 	

@@ -71,6 +71,9 @@ void WorkData(int confd,int i,FD &MyFd)
 				printf("query error: %s\n",mysql_error(&mysql));
 				return ;
 			}
+			
+			
+			
 		}
 		else
 		{

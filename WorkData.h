@@ -5,19 +5,12 @@
 #include <mysql/mysql.h>
 #include <stdio.h>
 #include <cstring>
+#include <unordered_map>
 #include <unistd.h>
 #include <string>
-class FD
-{
-public:
-	std::vector<std::pair<int,std::string>>clifd;
-	int maxfd = 0;
-	int lisfd;
-	fd_set allset;
-	void set(int);
-	void zero();
-};
-void WorkData(int,int ,FD &);
+#include "FD.h"
 
+void WorkData(int,int ,FD &);
+std::unordered_map<std::string,int>order{{"reg",1},{"SignIn",2},{"ForgetPasswd1",3},{"ForgetPasswd2",4}};
 
 #endif

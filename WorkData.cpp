@@ -71,9 +71,6 @@ void WorkData(int confd,int i,FD &MyFd)
 				printf("query error: %s\n",mysql_error(&mysql));
 				return ;
 			}
-			
-			
-			
 		}
 		else
 		{
@@ -229,6 +226,7 @@ void WorkData(int confd,int i,FD &MyFd)
 	}
 	else if(num1 == order["ChangeName"])
 	{
+		// buf2 -> new name
 		sscanf(buf,"%[^|]%*[|]%[^|]\n",buf1,buf2);
 		sprintf(sqlStr,"UPDATE uinfor SET name = '%s' WHERE id = '%s';",buf2,MyFd.clifd[i].second.c_str());	
 		printf("%s\n",sqlStr);
@@ -244,6 +242,7 @@ void WorkData(int confd,int i,FD &MyFd)
 	}
 	else if(num1 == order["ChangeGender"])
 	{
+		//buf2 -> new gender
 		sscanf(buf,"%[^|]%*[|]%[^|]\n",buf1,buf2);
 		sprintf(sqlStr,"UPDATE uinfor SET gender = '%s' WHERE id = '%s';",buf2,MyFd.clifd[i].second.c_str());	
 		printf("%s\n",sqlStr);
@@ -259,6 +258,7 @@ void WorkData(int confd,int i,FD &MyFd)
 	}
 	else if(num1 == order["ChangeBirth"])
 	{
+		//buf2 -> new birth
 		sscanf(buf,"%[^|]%*[|]%[^|]\n",buf1,buf2);
 		sprintf(sqlStr,"UPDATE uinfor SET birth = '%s' WHERE id = '%s';",buf2,MyFd.clifd[i].second.c_str());	
 		printf("%s\n",sqlStr);
@@ -274,6 +274,7 @@ void WorkData(int confd,int i,FD &MyFd)
 	}
 	else if(num1 == order["ChangeSign"])
 	{
+		//buf2 -> new sign
 		sscanf(buf,"%[^|]%*[|]%[^|]\n",buf1,buf2);
 		sprintf(sqlStr,"UPDATE uinfor SET sign = '%s' WHERE id = '%s';",buf2,MyFd.clifd[i].second.c_str());	
 		printf("%s\n",sqlStr);
@@ -286,6 +287,95 @@ void WorkData(int confd,int i,FD &MyFd)
 			write(confd,"1",1);
 		}
 		mysql_free_result(result);
+	}
+	
+	
+	
+	
+	
+	else if(num1 == order["ViewName"])
+	{
+		//buf2 -> ID
+		sscanf(buf,"%[^|]%*[|]%[^|]\n",buf1,buf2);
+		memset(str,0,sizeof(str));
+		sprintf(str,"select name from uinfor WHERE id = '%s';",buf2);
+		mysql_query(&mysql,str);
+		result = mysql_store_result(&mysql);
+		row = mysql_fetch_row(result);
+		if(row)
+		{
+			memset(str,0,sizeof(str));
+			sprintf(str,"0|%s",row[0]);
+			printf("%s\n",str);
+			write(confd,str,strlen(str));
+		}
+		else
+		{
+			write(confd,"-1",2);
+		}
+	}
+	else if(num1 == order["ViewGender"])
+	{
+		//buf2 -> ID
+		sscanf(buf,"%[^|]%*[|]%[^|]\n",buf1,buf2);
+		memset(str,0,sizeof(str));
+		sprintf(str,"select Gender from uinfor WHERE id = '%s';",buf2);
+		mysql_query(&mysql,str);
+		result = mysql_store_result(&mysql);
+		row = mysql_fetch_row(result);
+		if(row)
+		{
+			memset(str,0,sizeof(str));
+			sprintf(str,"0|%s",row[0]);
+			printf("%s\n",str);
+			write(confd,str,strlen(str));
+		}
+		else
+		{
+			write(confd,"-1",2);
+		}
+	}
+	else if(num1 == order["ViewBirth"])
+	{
+		//buf2 -> ID
+		sscanf(buf,"%[^|]%*[|]%[^|]\n",buf1,buf2);
+		memset(str,0,sizeof(str));
+		sprintf(str,"select birth from uinfor WHERE id = '%s';",buf2);
+		mysql_query(&mysql,str);
+		result = mysql_store_result(&mysql);
+		row = mysql_fetch_row(result);
+		if(row)
+		{
+			memset(str,0,sizeof(str));
+			sprintf(str,"0|%s",row[0]);
+			printf("%s\n",str);
+			write(confd,str,strlen(str));
+		}
+		else
+		{
+			write(confd,"-1",2);
+		}
+	}
+	else if(num1 == order["ViewSign"])
+	{
+		//buf2 -> ID
+		sscanf(buf,"%[^|]%*[|]%[^|]\n",buf1,buf2);
+		memset(str,0,sizeof(str));
+		sprintf(str,"select sign from uinfor WHERE id = '%s';",buf2);
+		mysql_query(&mysql,str);
+		result = mysql_store_result(&mysql);
+		row = mysql_fetch_row(result);
+		if(row)
+		{
+			memset(str,0,sizeof(str));
+			sprintf(str,"0|%s",row[0]);
+			printf("%s\n",str);
+			write(confd,str,strlen(str));
+		}
+		else
+		{
+			write(confd,"-1",2);
+		}
 	}
 	mysql_close(&mysql);
 

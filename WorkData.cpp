@@ -192,6 +192,7 @@ void WorkData(int confd,int i,FD &MyFd)
 		{
 			write(confd,"-1",2);
 		}
+		mysql_free_result(result);
 	}
 	else if(num1 == order["ChangeQuestion"])
 	{
@@ -221,13 +222,14 @@ void WorkData(int confd,int i,FD &MyFd)
 		{
 			write(confd,"-1",2);
 		}
+		mysql_free_result(result);
 	}
 	else if(num1 == order["ChangeName"])
 	{
 		sscanf(buf,"%[^|]%*[|]%[^|]\n",buf1,buf2);
 		sprintf(sqlStr,"UPDATE uinfor SET name = '%s' WHERE id = '%s';",buf2,MyFd.clifd[i].second.c_str());	
 		printf("%s\n",sqlStr);
-		if(!mysql_query(&mysql,str))
+		if(!mysql_query(&mysql,sqlStr))
 		{
 			write(confd,"0",1);
 		}
@@ -235,13 +237,14 @@ void WorkData(int confd,int i,FD &MyFd)
 		{
 			write(confd,"1",1);
 		}
+		mysql_free_result(result);
 	}
 	else if(num1 == order["ChangeGender"])
 	{
 		sscanf(buf,"%[^|]%*[|]%[^|]\n",buf1,buf2);
 		sprintf(sqlStr,"UPDATE uinfor SET gender = '%s' WHERE id = '%s';",buf2,MyFd.clifd[i].second.c_str());	
 		printf("%s\n",sqlStr);
-		if(!mysql_query(&mysql,str))
+		if(!mysql_query(&mysql,sqlStr))
 		{
 			write(confd,"0",1);
 		}
@@ -249,13 +252,14 @@ void WorkData(int confd,int i,FD &MyFd)
 		{
 			write(confd,"1",1);
 		}
+		mysql_free_result(result);
 	}
 	else if(num1 == order["ChangeBirth"])
 	{
 		sscanf(buf,"%[^|]%*[|]%[^|]\n",buf1,buf2);
 		sprintf(sqlStr,"UPDATE uinfor SET birth = '%s' WHERE id = '%s';",buf2,MyFd.clifd[i].second.c_str());	
 		printf("%s\n",sqlStr);
-		if(!mysql_query(&mysql,str))
+		if(!mysql_query(&mysql,sqlStr))
 		{
 			write(confd,"0",1);
 		}
@@ -263,13 +267,14 @@ void WorkData(int confd,int i,FD &MyFd)
 		{
 			write(confd,"1",1);
 		}
+		mysql_free_result(result);
 	}
 	else if(num1 == order["ChangeSign"])
 	{
 		sscanf(buf,"%[^|]%*[|]%[^|]\n",buf1,buf2);
 		sprintf(sqlStr,"UPDATE uinfor SET sign = '%s' WHERE id = '%s';",buf2,MyFd.clifd[i].second.c_str());	
 		printf("%s\n",sqlStr);
-		if(!mysql_query(&mysql,str))
+		if(!mysql_query(&mysql,sqlStr))
 		{
 			write(confd,"0",1);
 		}
@@ -277,6 +282,7 @@ void WorkData(int confd,int i,FD &MyFd)
 		{
 			write(confd,"1",1);
 		}
+		mysql_free_result(result);
 	}
 	mysql_close(&mysql);
 

@@ -80,7 +80,7 @@ void WorkData(int confd,int i,FD &MyFd)
 	}
 	else if(num1 == 2)
 	{
-	
+		//buf2 ->id buf3->password
 		sscanf(buf,"%[^|]%*[|]%[^|]%*[|]%s",buf1,buf2,buf3);
 		memset(str,0,sizeof(str));
 		sprintf(str,"%s%s%s%s%s","select * from user where id = '",buf2,"' and password = '",buf3,"';");
@@ -125,6 +125,7 @@ void WorkData(int confd,int i,FD &MyFd)
 		{
 			write(confd,"-1",2);
 		}
+		mysql_free_result(result);
 	}
 	else if(num1 == 4)
 	{
@@ -145,6 +146,7 @@ void WorkData(int confd,int i,FD &MyFd)
 		{
 			write(confd,"-1",2);
 		}
+		mysql_free_result(result);
 	}
 	else if(num1 == 5)
 	{
@@ -157,6 +159,37 @@ void WorkData(int confd,int i,FD &MyFd)
 		}
 		else
 		{
+			write(confd,"-1",2);
+		}
+		mysql_free_result(result);
+	}
+	else if(num1 == 10)
+	{
+//		buf2 ->password buf3 ->new password
+		sscanf(buf,"%[^|]%*[|]%[^|]%*[|]%s",buf1,buf2,buf3);
+		memset(str,0,sizeof(str));
+		sprintf(str,"%s%s%s%s%s","select * from user where id = '",MyFd.clifd[i].second.c_str(),"' and password = '",buf2,"';");
+		printf("%s\n",str);
+		mysql_query(&mysql,str);
+		result = mysql_store_result(&mysql);
+		row = mysql_fetch_row(result);
+		if(row)
+		{
+			memset(str,0,sizeof(str));
+			sprintf(str,"%s%s%s%s%s","update user set password = '",buf3,"' where id = '",MyFd.clifd[i].second.c_str(),"';");
+			if(!mysql_query(&mysql,str))
+			{
+				write(confd,"0",1);
+			
+			}
+			else
+			{
+				write(confd,"-1",2);
+			}
+		}
+		else
+		{
+		
 			write(confd,"-1",2);
 		}
 	}

@@ -19,7 +19,7 @@ void WorkData(int confd,int i,FD &MyFd)
 	char buf1[1024]={0},buf2[1024]={0},buf3[1024]={0},buf4[1024]={0},buf5[1024]={0},str[1024]={0},sqlStr[1024]={0};
 	
 	sscanf(buf,"%[^|]",buf1);
-    	if(buf1[0]=='#')
+	if(buf1[0]=='#')
 		sscanf(buf1,"#%s",buf1);
 	int num1=atoi(buf1);
 	
@@ -225,8 +225,8 @@ void WorkData(int confd,int i,FD &MyFd)
 		}
 	}
 	else if(num1 == 12)
-    {
-        sscanf(buf,"%[^|]%*[|]%[^|]\n",buf1,buf2);
+	{
+		sscanf(buf,"%[^|]%*[|]%[^|]\n",buf1,buf2);
 		sprintf(sqlStr,"UPDATE uinfor SET name = '%s' WHERE id = '%s';",buf2,MyFd.clifd[i].second.c_str());	
 		printf("%s\n",sqlStr);
 		if(!mysql_query(&mysql,str))
@@ -237,10 +237,10 @@ void WorkData(int confd,int i,FD &MyFd)
 		{
 			write(confd,"1",1);
 		}
-    }
+	}
 	else if(num1 == 13)
-    {
-        sscanf(buf,"%[^|]%*[|]%[^|]\n",buf1,buf2);
+	{
+		sscanf(buf,"%[^|]%*[|]%[^|]\n",buf1,buf2);
 		sprintf(sqlStr,"UPDATE uinfor SET gender = '%s' WHERE id = '%s';",buf2,MyFd.clifd[i].second.c_str());	
 		printf("%s\n",sqlStr);
 		if(!mysql_query(&mysql,str))
@@ -251,10 +251,10 @@ void WorkData(int confd,int i,FD &MyFd)
 		{
 			write(confd,"1",1);
 		}
-    }
+	}
 	else if(num1 == 15)
-    {
-        sscanf(buf,"%[^|]%*[|]%[^|]\n",buf1,buf2);
+	{
+		sscanf(buf,"%[^|]%*[|]%[^|]\n",buf1,buf2);
 		sprintf(sqlStr,"UPDATE uinfor SET birth = '%s' WHERE id = '%s';",buf2,MyFd.clifd[i].second.c_str());	
 		printf("%s\n",sqlStr);
 		if(!mysql_query(&mysql,str))
@@ -265,10 +265,10 @@ void WorkData(int confd,int i,FD &MyFd)
 		{
 			write(confd,"1",1);
 		}
-    }
+	}
 	else if(num1 == 16)
-    {
-        sscanf(buf,"%[^|]%*[|]%[^|]\n",buf1,buf2);
+	{
+		sscanf(buf,"%[^|]%*[|]%[^|]\n",buf1,buf2);
 		sprintf(sqlStr,"UPDATE uinfor SET sign = '%s' WHERE id = '%s';",buf2,MyFd.clifd[i].second.c_str());	
 		printf("%s\n",sqlStr);
 		if(!mysql_query(&mysql,str))
@@ -279,7 +279,7 @@ void WorkData(int confd,int i,FD &MyFd)
 		{
 			write(confd,"1",1);
 		}
-    }
+	}
 
 	mysql_close(&mysql);
 

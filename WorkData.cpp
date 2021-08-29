@@ -39,7 +39,7 @@ void WorkData(int confd,int i,FD &MyFd)
     	    	printf("connected\n");
 
 	
-	if(num1 == 1)
+	if(num1 == order["reg"])
 	{
 		sscanf(buf,"%[^|]%*[|]%[^|]%*[|]%[^|]%*[|]%[^|]%*[|]%[^|]\n",buf1,buf2,buf3,buf4,buf5);
         
@@ -79,7 +79,7 @@ void WorkData(int confd,int i,FD &MyFd)
 
         	mysql_free_result(result);
 	}
-	else if(num1 == 2)
+	else if(num1 == order["SignIn"])
 	{
 		//buf2 ->id buf3->password
 		sscanf(buf,"%[^|]%*[|]%[^|]%*[|]%s",buf1,buf2,buf3);
@@ -105,7 +105,7 @@ void WorkData(int confd,int i,FD &MyFd)
 		}
 		mysql_free_result(result);
 	}
-	else if(num1 == 3)
+	else if(num1 == order["ForgetPasswd1"])
 	{
 		//buf2->id
 		sscanf(buf,"%[^|]%*[|]%s",buf1,buf2);
@@ -128,7 +128,7 @@ void WorkData(int confd,int i,FD &MyFd)
 		}
 		mysql_free_result(result);
 	}
-	else if(num1 == 4)
+	else if(num1 == order["ForgetPasswd2"])
 	{
 		//buf2 -> answer
 		sscanf(buf,"%[^|]%*[|]%s",buf1,buf2);
@@ -149,7 +149,7 @@ void WorkData(int confd,int i,FD &MyFd)
 		}
 		mysql_free_result(result);
 	}
-	else if(num1 == 5)
+	else if(num1 == order["DeleteId"])
 	{
 		memset(str,0,sizeof(str));
 		sprintf(str,"%s%s%s","delete from user where id ='",MyFd.clifd[i].second.c_str(),"';");	
@@ -164,7 +164,7 @@ void WorkData(int confd,int i,FD &MyFd)
 		}
 		mysql_free_result(result);
 	}
-	else if(num1 == 10)
+	else if(num1 == order["ChangePasswd"])
 	{
 //		buf2 ->password buf3 ->new password
 		sscanf(buf,"%[^|]%*[|]%[^|]%*[|]%s",buf1,buf2,buf3);
@@ -194,7 +194,7 @@ void WorkData(int confd,int i,FD &MyFd)
 			write(confd,"-1",2);
 		}
 	}
-	else if(num1 == 11)
+	else if(num1 == order["ChangeQuestion"])
 	{
 		//buf2 ->password buf3->newquestion buf4-> new answer
 		sscanf(buf,"%[^|]%*[|]%[^|]%*[|]%[^|]%*[|]%s",buf1,buf2,buf3,buf4);
@@ -224,7 +224,7 @@ void WorkData(int confd,int i,FD &MyFd)
 			write(confd,"-1",2);
 		}
 	}
-	else if(num1 == 12)
+	else if(num1 == order["ChangeName"])
 	{
 		sscanf(buf,"%[^|]%*[|]%[^|]\n",buf1,buf2);
 		sprintf(sqlStr,"UPDATE uinfor SET name = '%s' WHERE id = '%s';",buf2,MyFd.clifd[i].second.c_str());	
@@ -238,7 +238,7 @@ void WorkData(int confd,int i,FD &MyFd)
 			write(confd,"1",1);
 		}
 	}
-	else if(num1 == 13)
+	else if(num1 == order["ChangeGender"])
 	{
 		sscanf(buf,"%[^|]%*[|]%[^|]\n",buf1,buf2);
 		sprintf(sqlStr,"UPDATE uinfor SET gender = '%s' WHERE id = '%s';",buf2,MyFd.clifd[i].second.c_str());	
@@ -252,7 +252,7 @@ void WorkData(int confd,int i,FD &MyFd)
 			write(confd,"1",1);
 		}
 	}
-	else if(num1 == 15)
+	else if(num1 == order["ChangeBirth"])
 	{
 		sscanf(buf,"%[^|]%*[|]%[^|]\n",buf1,buf2);
 		sprintf(sqlStr,"UPDATE uinfor SET birth = '%s' WHERE id = '%s';",buf2,MyFd.clifd[i].second.c_str());	
@@ -266,7 +266,7 @@ void WorkData(int confd,int i,FD &MyFd)
 			write(confd,"1",1);
 		}
 	}
-	else if(num1 == 16)
+	else if(num1 == order["ChangeSign"])
 	{
 		sscanf(buf,"%[^|]%*[|]%[^|]\n",buf1,buf2);
 		sprintf(sqlStr,"UPDATE uinfor SET sign = '%s' WHERE id = '%s';",buf2,MyFd.clifd[i].second.c_str());	

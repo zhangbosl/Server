@@ -10,7 +10,6 @@
 #include <vector>
 #include <string>
 #include "FD.h"
-#include "WorkData.h"
 #include "Init.h"
-
+void WorkData(int,int ,FD &);
 #endif

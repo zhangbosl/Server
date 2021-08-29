@@ -5,7 +5,7 @@ void WorkData(int confd,int i,FD &MyFd)
 {
 	
 	char buf[1024]={0};
-	
+	printf("i = %d\n",i);
 	//断开连接
 	if(!read(confd,buf,sizeof(buf)))
 	{
@@ -106,6 +106,7 @@ void WorkData(int confd,int i,FD &MyFd)
 	}
 	else if(num1 == 3)
 	{
+		//buf2->id
 		sscanf(buf,"%[^|]%*[|]%s",buf1,buf2);
 		memset(str,0,sizeof(str));
 		sprintf(str,"%s%s%s","select * from user where id = '",buf2,"';");
@@ -117,7 +118,28 @@ void WorkData(int confd,int i,FD &MyFd)
 		{
 			memset(str,0,sizeof(str));
 			sprintf(str,"%s%s","0|",row[2]);
+			MyFd.clifd[i].second = buf2;
 			write(confd,str,strlen(str));
+		}
+		else
+		{
+			write(confd,"-1",2);
+		}
+	}
+	else if(num1 == 4)
+	{
+		//buf2 -> answer
+		sscanf(buf,"%[^|]%*[|]%s",buf1,buf2);
+		memset(str,0,sizeof(str));
+		sprintf(str,"%s%s%s%s%s","select * from user where id ='",MyFd.clifd[i].second.c_str(),"' and answer = '",buf2,"';");
+		printf("%s\n",str);
+		mysql_query(&mysql,str);
+		result = mysql_store_result(&mysql);
+		row = mysql_fetch_row(result);
+		if(row)
+		{
+			write(confd,"0",1);
+		
 		}
 		else
 		{

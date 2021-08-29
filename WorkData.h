@@ -5,6 +5,7 @@
 #include <mysql/mysql.h>
 #include <stdio.h>
 #include <cstring>
+#include <iostream>
 #include <unistd.h>
 #include <string>
 #include "FD.h"

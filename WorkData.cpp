@@ -19,65 +19,65 @@ void WorkData(int confd,int i,FD &MyFd)
 	char buf1[1024]={0},buf2[1024]={0},buf3[1024]={0},buf4[1024]={0},buf5[1024]={0},str[1024]={0},sqlStr[1024]={0};
 	
 	sscanf(buf,"%[^|]",buf1);
-    if(buf1[0]=='#')
-        sscanf(buf1,"#%s",buf1);
+    	if(buf1[0]=='#')
+		sscanf(buf1,"#%s",buf1);
 	int num1=atoi(buf1);
 	
 	
 	MYSQL mysql;
-    MYSQL_RES *result = NULL;
-    MYSQL_ROW row;
+   	MYSQL_RES *result = NULL;
+   	MYSQL_ROW row;
     
     
-    mysql_init(&mysql);
-    if(mysql_real_connect(&mysql,"localhost","root",NULL,"chat",0,NULL,0)==NULL)
-    {
-        printf("connect error: %s\n",mysql_error(&mysql));
-        return ;
-    }
-    else
-        printf("connected\n");
+    	mysql_init(&mysql);
+    	if(mysql_real_connect(&mysql,"localhost","root",NULL,"chat",0,NULL,0)==NULL)
+    	{
+    	    	printf("connect error: %s\n",mysql_error(&mysql));
+    	    	return ;
+    	}
+    	else
+    	    	printf("connected\n");
 
 	
 	if(num1 == 1)
 	{
-        sscanf(buf,"%[^|]%*[|]%[^|]%*[|]%[^|]%*[|]%[^|]%*[|]%[^|]\n",buf1,buf2,buf3,buf4,buf5);
+		sscanf(buf,"%[^|]%*[|]%[^|]%*[|]%[^|]%*[|]%[^|]%*[|]%[^|]\n",buf1,buf2,buf3,buf4,buf5);
         
-        sprintf(sqlStr,"insert into user (password,question,answer,online) values('%s','%s','%s',0)",buf3,buf4,buf5);
-        if(mysql_query(&mysql,sqlStr) != 0)
-        {
-            printf("query error: %s\n",mysql_error(&mysql));
-            return ;
-        }
-        
-        sprintf(sqlStr,"select * from user order by id desc limit 1");
-        if(mysql_query(&mysql,sqlStr) != 0)
-        {
-            printf("query error: %s\n",mysql_error(&mysql));
-            return ;
-        }
-        
-        result=mysql_store_result(&mysql);
-        row = mysql_fetch_row(result);
-        
-        if(row&&row[1]==buf3&&row[2]==buf4&&row[3]==buf5)
-        {
-            write(confd,"#001|0|regSucess",16);
-            MyFd.clifd[i].second=row[0];
-        
-            sprintf(sqlStr,"insert into uinfor (id,name) values('%s','%s')",row[0],buf1);
-            if(mysql_query(&mysql,sqlStr) != 0)
-            {
-                printf("query error: %s\n",mysql_error(&mysql));
-                return ;
-            }
-        }
-        else
-        {
-            write(confd,"#001|1|regFailed",16);
-        }
+	        sprintf(sqlStr,"insert into user (password,question,answer,online) values('%s','%s','%s',0)",buf3,buf4,buf5);
+        	if(mysql_query(&mysql,sqlStr) != 0)
+        	{
+        	    	printf("query error: %s\n",mysql_error(&mysql));
+        	    	return ;
+        	}
+        	
+        	sprintf(sqlStr,"select * from user order by id desc limit 1");
+        	if(mysql_query(&mysql,sqlStr) != 0)
+        	{
+        	    	printf("query error: %s\n",mysql_error(&mysql));
+        	    	return ;
+        	}
+        	
+        	result=mysql_store_result(&mysql);
+        	row = mysql_fetch_row(result);
+        	
+        	if(row&&row[1]==buf3&&row[2]==buf4&&row[3]==buf5)
+        	{
+			write(confd,"#001|0|regSucess",16);
+        		MyFd.clifd[i].second=row[0];
+        		
+        	    	sprintf(sqlStr,"insert into uinfor (id,name) values('%s','%s')",row[0],buf1);
+            		if(mysql_query(&mysql,sqlStr) != 0)
+            		{
+            		    printf("query error: %s\n",mysql_error(&mysql));
+            		    return ;
+            		}
+        	}
+        	else
+        	{
+            		write(confd,"#001|1|regFailed",16);
+        	}
 
-        mysql_free_result(result);
+        	mysql_free_result(result);
 	}
 	else if(num1 == 2)
 	{

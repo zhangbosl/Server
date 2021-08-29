@@ -6,11 +6,11 @@
 
 #IncludeRegexTransform: 
 
-/home/lingxi/documents/code/Server/Server/FD.cpp
+/home/lingxi/documents/code/Server1/FD.cpp
 FD.h
-/home/lingxi/documents/code/Server/Server/FD.h
+/home/lingxi/documents/code/Server1/FD.h
 
-/home/lingxi/documents/code/Server/Server/FD.h
+/home/lingxi/documents/code/Server1/FD.h
 vector
 -
 unistd.h
@@ -20,11 +20,11 @@ sys/types.h
 string
 -
 
-/home/lingxi/documents/code/Server/Server/Init.cpp
+/home/lingxi/documents/code/Server1/Init.cpp
 Init.h
-/home/lingxi/documents/code/Server/Server/Init.h
+/home/lingxi/documents/code/Server1/Init.h
 
-/home/lingxi/documents/code/Server/Server/Init.h
+/home/lingxi/documents/code/Server1/Init.h
 arpa/inet.h
 -
 cstring
@@ -32,11 +32,11 @@ cstring
 stdio.h
 -
 
-/home/lingxi/documents/code/Server/Server/MyServer.cpp
+/home/lingxi/documents/code/Server1/MyServer.cpp
 MyServer.h
-/home/lingxi/documents/code/Server/Server/MyServer.h
+/home/lingxi/documents/code/Server1/MyServer.h
 
-/home/lingxi/documents/code/Server/Server/MyServer.h
+/home/lingxi/documents/code/Server1/MyServer.h
 stdio.h
 -
 stdlib.h
@@ -53,12 +53,18 @@ vector
 -
 string
 -
-
-/home/lingxi/documents/code/Server/Server/WorkData.cpp
+FD.h
+/home/lingxi/documents/code/Server1/FD.h
 WorkData.h
-/home/lingxi/documents/code/Server/Server/WorkData.h
+/home/lingxi/documents/code/Server1/WorkData.h
+Init.h
+/home/lingxi/documents/code/Server1/Init.h
 
-/home/lingxi/documents/code/Server/Server/WorkData.h
+/home/lingxi/documents/code/Server1/WorkData.cpp
+WorkData.h
+/home/lingxi/documents/code/Server1/WorkData.h
+
+/home/lingxi/documents/code/Server1/WorkData.h
 vector
 -
 sys/types.h
@@ -73,4 +79,6 @@ unistd.h
 -
 string
 -
+FD.h
+/home/lingxi/documents/code/Server1/FD.h
 

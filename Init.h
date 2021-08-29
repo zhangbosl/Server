@@ -4,8 +4,7 @@
 #include <cstring>
 #include <stdio.h>
 #define PORT 8659  //端口
-
-const char* MyIP="192.168.209.130"; //IP
+#define  MyIP "192.168.209.130" //IP
 
 struct sockaddr_in InitSock();
 int InitBind(int,sockaddr_in &);

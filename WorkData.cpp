@@ -76,7 +76,7 @@ void WorkData(int confd,int i,FD &MyFd)
         }
 
         mysql_free_result(result);
-        mysql_close(&mysql);
+        
 	}
 	else if(num1 == 2)
 	{
@@ -108,6 +108,7 @@ void WorkData(int confd,int i,FD &MyFd)
 		{
 			write(confd,"-1",2);
 		}
+		mysql_free_result(result);
 	}
 	else if(num1 == 3)
 	{
@@ -115,7 +116,7 @@ void WorkData(int confd,int i,FD &MyFd)
 	
 	}
 
-	
+	mysql_close(&mysql);
 	/*
 	
 	

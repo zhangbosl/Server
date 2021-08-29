@@ -43,10 +43,10 @@ RM = /usr/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/lingxi/documents/code/Server/Server
+CMAKE_SOURCE_DIR = /home/lingxi/documents/code/Server1
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/lingxi/documents/code/Server/Server/build
+CMAKE_BINARY_DIR = /home/lingxi/documents/code/Server1/build
 
 # Include any dependencies generated for this target.
 include CMakeFiles/Server.dir/depend.make
@@ -59,16 +59,16 @@ include CMakeFiles/Server.dir/flags.make
 
 CMakeFiles/Server.dir/FD.cpp.o: CMakeFiles/Server.dir/flags.make
 CMakeFiles/Server.dir/FD.cpp.o: ../FD.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/lingxi/documents/code/Server/Server/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/Server.dir/FD.cpp.o"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/Server.dir/FD.cpp.o -c /home/lingxi/documents/code/Server/Server/FD.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/lingxi/documents/code/Server1/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/Server.dir/FD.cpp.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/Server.dir/FD.cpp.o -c /home/lingxi/documents/code/Server1/FD.cpp
 
 CMakeFiles/Server.dir/FD.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/Server.dir/FD.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/lingxi/documents/code/Server/Server/FD.cpp > CMakeFiles/Server.dir/FD.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/lingxi/documents/code/Server1/FD.cpp > CMakeFiles/Server.dir/FD.cpp.i
 
 CMakeFiles/Server.dir/FD.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/Server.dir/FD.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/lingxi/documents/code/Server/Server/FD.cpp -o CMakeFiles/Server.dir/FD.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/lingxi/documents/code/Server1/FD.cpp -o CMakeFiles/Server.dir/FD.cpp.s
 
 CMakeFiles/Server.dir/FD.cpp.o.requires:
 
@@ -83,16 +83,16 @@ CMakeFiles/Server.dir/FD.cpp.o.provides.build: CMakeFiles/Server.dir/FD.cpp.o
 
 CMakeFiles/Server.dir/Init.cpp.o: CMakeFiles/Server.dir/flags.make
 CMakeFiles/Server.dir/Init.cpp.o: ../Init.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/lingxi/documents/code/Server/Server/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/Server.dir/Init.cpp.o"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/Server.dir/Init.cpp.o -c /home/lingxi/documents/code/Server/Server/Init.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/lingxi/documents/code/Server1/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/Server.dir/Init.cpp.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/Server.dir/Init.cpp.o -c /home/lingxi/documents/code/Server1/Init.cpp
 
 CMakeFiles/Server.dir/Init.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/Server.dir/Init.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/lingxi/documents/code/Server/Server/Init.cpp > CMakeFiles/Server.dir/Init.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/lingxi/documents/code/Server1/Init.cpp > CMakeFiles/Server.dir/Init.cpp.i
 
 CMakeFiles/Server.dir/Init.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/Server.dir/Init.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/lingxi/documents/code/Server/Server/Init.cpp -o CMakeFiles/Server.dir/Init.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/lingxi/documents/code/Server1/Init.cpp -o CMakeFiles/Server.dir/Init.cpp.s
 
 CMakeFiles/Server.dir/Init.cpp.o.requires:
 
@@ -107,16 +107,16 @@ CMakeFiles/Server.dir/Init.cpp.o.provides.build: CMakeFiles/Server.dir/Init.cpp.
 
 CMakeFiles/Server.dir/MyServer.cpp.o: CMakeFiles/Server.dir/flags.make
 CMakeFiles/Server.dir/MyServer.cpp.o: ../MyServer.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/lingxi/documents/code/Server/Server/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/Server.dir/MyServer.cpp.o"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/Server.dir/MyServer.cpp.o -c /home/lingxi/documents/code/Server/Server/MyServer.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/lingxi/documents/code/Server1/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/Server.dir/MyServer.cpp.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/Server.dir/MyServer.cpp.o -c /home/lingxi/documents/code/Server1/MyServer.cpp
 
 CMakeFiles/Server.dir/MyServer.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/Server.dir/MyServer.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/lingxi/documents/code/Server/Server/MyServer.cpp > CMakeFiles/Server.dir/MyServer.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/lingxi/documents/code/Server1/MyServer.cpp > CMakeFiles/Server.dir/MyServer.cpp.i
 
 CMakeFiles/Server.dir/MyServer.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/Server.dir/MyServer.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/lingxi/documents/code/Server/Server/MyServer.cpp -o CMakeFiles/Server.dir/MyServer.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/lingxi/documents/code/Server1/MyServer.cpp -o CMakeFiles/Server.dir/MyServer.cpp.s
 
 CMakeFiles/Server.dir/MyServer.cpp.o.requires:
 
@@ -131,16 +131,16 @@ CMakeFiles/Server.dir/MyServer.cpp.o.provides.build: CMakeFiles/Server.dir/MySer
 
 CMakeFiles/Server.dir/WorkData.cpp.o: CMakeFiles/Server.dir/flags.make
 CMakeFiles/Server.dir/WorkData.cpp.o: ../WorkData.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/lingxi/documents/code/Server/Server/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/Server.dir/WorkData.cpp.o"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/Server.dir/WorkData.cpp.o -c /home/lingxi/documents/code/Server/Server/WorkData.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/lingxi/documents/code/Server1/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/Server.dir/WorkData.cpp.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/Server.dir/WorkData.cpp.o -c /home/lingxi/documents/code/Server1/WorkData.cpp
 
 CMakeFiles/Server.dir/WorkData.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/Server.dir/WorkData.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/lingxi/documents/code/Server/Server/WorkData.cpp > CMakeFiles/Server.dir/WorkData.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/lingxi/documents/code/Server1/WorkData.cpp > CMakeFiles/Server.dir/WorkData.cpp.i
 
 CMakeFiles/Server.dir/WorkData.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/Server.dir/WorkData.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/lingxi/documents/code/Server/Server/WorkData.cpp -o CMakeFiles/Server.dir/WorkData.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/lingxi/documents/code/Server1/WorkData.cpp -o CMakeFiles/Server.dir/WorkData.cpp.s
 
 CMakeFiles/Server.dir/WorkData.cpp.o.requires:
 
@@ -153,37 +153,12 @@ CMakeFiles/Server.dir/WorkData.cpp.o.provides: CMakeFiles/Server.dir/WorkData.cp
 CMakeFiles/Server.dir/WorkData.cpp.o.provides.build: CMakeFiles/Server.dir/WorkData.cpp.o
 
 
-CMakeFiles/Server.dir/c.c.o: CMakeFiles/Server.dir/flags.make
-CMakeFiles/Server.dir/c.c.o: ../c.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/lingxi/documents/code/Server/Server/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building C object CMakeFiles/Server.dir/c.c.o"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/Server.dir/c.c.o   -c /home/lingxi/documents/code/Server/Server/c.c
-
-CMakeFiles/Server.dir/c.c.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/Server.dir/c.c.i"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/lingxi/documents/code/Server/Server/c.c > CMakeFiles/Server.dir/c.c.i
-
-CMakeFiles/Server.dir/c.c.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/Server.dir/c.c.s"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/lingxi/documents/code/Server/Server/c.c -o CMakeFiles/Server.dir/c.c.s
-
-CMakeFiles/Server.dir/c.c.o.requires:
-
-.PHONY : CMakeFiles/Server.dir/c.c.o.requires
-
-CMakeFiles/Server.dir/c.c.o.provides: CMakeFiles/Server.dir/c.c.o.requires
-	$(MAKE) -f CMakeFiles/Server.dir/build.make CMakeFiles/Server.dir/c.c.o.provides.build
-.PHONY : CMakeFiles/Server.dir/c.c.o.provides
-
-CMakeFiles/Server.dir/c.c.o.provides.build: CMakeFiles/Server.dir/c.c.o
-
-
 # Object files for target Server
 Server_OBJECTS = \
 "CMakeFiles/Server.dir/FD.cpp.o" \
 "CMakeFiles/Server.dir/Init.cpp.o" \
 "CMakeFiles/Server.dir/MyServer.cpp.o" \
-"CMakeFiles/Server.dir/WorkData.cpp.o" \
-"CMakeFiles/Server.dir/c.c.o"
+"CMakeFiles/Server.dir/WorkData.cpp.o"
 
 # External object files for target Server
 Server_EXTERNAL_OBJECTS =
@@ -192,11 +167,10 @@ Server: CMakeFiles/Server.dir/FD.cpp.o
 Server: CMakeFiles/Server.dir/Init.cpp.o
 Server: CMakeFiles/Server.dir/MyServer.cpp.o
 Server: CMakeFiles/Server.dir/WorkData.cpp.o
-Server: CMakeFiles/Server.dir/c.c.o
 Server: CMakeFiles/Server.dir/build.make
 Server: /usr/lib/x86_64-linux-gnu/libmysqlclient.so
 Server: CMakeFiles/Server.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/lingxi/documents/code/Server/Server/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Linking CXX executable Server"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/lingxi/documents/code/Server1/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Linking CXX executable Server"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/Server.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
@@ -208,7 +182,6 @@ CMakeFiles/Server.dir/requires: CMakeFiles/Server.dir/FD.cpp.o.requires
 CMakeFiles/Server.dir/requires: CMakeFiles/Server.dir/Init.cpp.o.requires
 CMakeFiles/Server.dir/requires: CMakeFiles/Server.dir/MyServer.cpp.o.requires
 CMakeFiles/Server.dir/requires: CMakeFiles/Server.dir/WorkData.cpp.o.requires
-CMakeFiles/Server.dir/requires: CMakeFiles/Server.dir/c.c.o.requires
 
 .PHONY : CMakeFiles/Server.dir/requires
 
@@ -217,6 +190,6 @@ CMakeFiles/Server.dir/clean:
 .PHONY : CMakeFiles/Server.dir/clean
 
 CMakeFiles/Server.dir/depend:
-	cd /home/lingxi/documents/code/Server/Server/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/lingxi/documents/code/Server/Server /home/lingxi/documents/code/Server/Server /home/lingxi/documents/code/Server/Server/build /home/lingxi/documents/code/Server/Server/build /home/lingxi/documents/code/Server/Server/build/CMakeFiles/Server.dir/DependInfo.cmake --color=$(COLOR)
+	cd /home/lingxi/documents/code/Server1/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/lingxi/documents/code/Server1 /home/lingxi/documents/code/Server1 /home/lingxi/documents/code/Server1/build /home/lingxi/documents/code/Server1/build /home/lingxi/documents/code/Server1/build/CMakeFiles/Server.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : CMakeFiles/Server.dir/depend
 

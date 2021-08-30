@@ -604,15 +604,48 @@ void WorkData(int confd,int i,FD &MyFd)
 	}
 	else if(num1 ==order["ChangeGName"])
 	{
-	
+		sscanf(buf,"%[^|]%*[|]%[^|]%*[|]%[^|]\n",buf1,buf2,buf3);	
+		memset(str,0,sizeof(str));
+		sprintf(str,"update ginfor set name = '%s' where gid = '%s' and uid= '%s';",buf3,buf2,MyFd.clifd[i].second.c_str());
+		mysql_query(&mysql,str);
+		if(!mysql_query(&mysql,str))
+		{
+			write(confd,"0",1);
+		}
+		else
+		{
+			write(confd,"-1",2);
+		}	
 	}
 	else if(num1 ==order["ChangeGIntro"])
 	{
-	
+		sscanf(buf,"%[^|]%*[|]%[^|]%*[|]%[^|]\n",buf1,buf2,buf3);	
+		memset(str,0,sizeof(str));
+		sprintf(str,"update ginfor set intro = '%s' where gid = '%s'and uid= '%s';",buf3,buf2,MyFd.clifd[i].second.c_str());
+		mysql_query(&mysql,str);
+		if(!mysql_query(&mysql,str))
+		{
+			write(confd,"0",1);
+		}
+		else
+		{
+			write(confd,"-1",2);
+		}	
 	}
 	else if(num1 ==order["ChangeGRemark"])
 	{
-	
+		sscanf(buf,"%[^|]%*[|]%[^|]%*[|]%[^|]\n",buf1,buf2,buf3);	
+		memset(str,0,sizeof(str));
+		sprintf(str,"update gmember set remark = '%s' where gid = '%s' and uid= '%s';",buf3,buf2,MyFd.clifd[i].second.c_str());
+		mysql_query(&mysql,str);
+		if(!mysql_query(&mysql,str))
+		{
+			write(confd,"0",1);
+		}
+		else
+		{
+			write(confd,"-1",2);
+		}	
 	}
 	
 	

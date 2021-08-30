@@ -41,8 +41,6 @@ void WorkData(int confd,int i,FD &MyFd)
 	int num1=atoi(buf1);printf("num = %s\n",buf1);
 	
 	
-
-
 	
 	if(num1 == order["Reg"])
 	{
@@ -97,7 +95,7 @@ void WorkData(int confd,int i,FD &MyFd)
 		//sucess
 		if(row)
 		{
-			write(confd,"0",1);
+			write(confd,"#002|0|",7);
 			MyFd.clifd[i].second = buf2;
 			memset(str,0,sizeof(str));
 			sprintf(str,"%s%s%s","update user set online = 1 where id = '",row[0],"';");
@@ -533,6 +531,7 @@ void WorkData(int confd,int i,FD &MyFd)
 		mysql_free_result(result);	
 	
 	}
+	/*
 	else if(num1 == order["AddGroup"])
 	{
 	
@@ -648,9 +647,8 @@ void WorkData(int confd,int i,FD &MyFd)
 		}	
 	}
 	
-	
+	*/
 	mysql_close(&mysql);
 
-	
 }
 //g++ MyServer.cpp Init.cpp FD.cpp WorkData.cpp -L/usr/lib/x86_64-linux-gnu/mysql -lmysqlclient

@@ -382,14 +382,20 @@ void WorkData(int confd,int i,FD &MyFd)
 		//buf2 -> ID
 		sscanf(buf,"%[^|]%*[|]%[^|]\n",buf1,buf2);	
 		memset(str,0,sizeof(str));
-		sprintf(str,"select * from friend WHERE id1 = '%s' and id2 = '%s';",MyFd.clifd[i].second.c_str(),buf2);
+		sprintf(str,"select state from friend WHERE id1 = '%s' and id2 = '%s';",buf2,MyFd.clifd[i].second.c_str());
 		mysql_query(&mysql,str);
 		result = mysql_store_result(&mysql);
 		row = mysql_fetch_row(result);
 		if(row)
-		{
-			printf("You have been friends\n");
-			write(confd,"-1",2);
+		{	if(atoi(row[0]) == 1)
+			{
+				printf("You have been friends\n");
+				write(confd,"-1",2);			
+			}
+			else
+			{
+				write(confd,"0",1);
+			}
 		}
 		else
 		{
@@ -422,9 +428,58 @@ void WorkData(int confd,int i,FD &MyFd)
 		write(confd,str,strlen(str));
 		mysql_free_result(result);
 	}
+	else if(num1 == order["AgreeRequest"])
+	{
+		sscanf(buf,"%[^|]%*[|]%[^|]\n",buf1,buf2);	
+		memset(str,0,sizeof(str));
+		sprintf(str,"select * from friend WHERE id1 = '%s' and id2 = '%s' and state = 0;",buf2,MyFd.clifd[i].second.c_str());
+		mysql_query(&mysql,str);
+		result = mysql_store_result(&mysql);
+		row = mysql_fetch_row(result);
+		if(row)
+		{
+			memset(str,0,sizeof(str));
+			sprintf(str,"update friend set state = 1 WHERE id1 = '%s' and id2 = '%s' and state = 0;",buf2,MyFd.clifd[i].second.c_str());
+			if(!mysql_query(&mysql,str))
+			{
+				memset(str,0,sizeof(str));
+				sprintf(str,"insert into friend (id1,id2,state) values('%s','%s',1);",MyFd.clifd[i].second.c_str(),buf2);
+				printf("%s\n");
+				if(!mysql_query(&mysql,str))
+					write(confd,"0",1);
+				else
+					write(confd,"-1",2);
+			}
+			else
+			{
+				write(confd,"-1",2);
+			}
+		}
 	
 	
+	}
+	else if(num1 == order["RejectRequest"])
+	{
 	
+		;
+	}
+	
+	else if(num1 == order["ChangeRemark"])
+	{
+		//buf2 -> ID
+		sscanf(buf,"%[^|]%*[|]%[^|]%*[|]%[^|]\n",buf1,buf2,buf3);	
+		memset(str,0,sizeof(str));
+		sprintf(str,"update friend set remark = '%s' where id1 = '%s' and id2= '%s';",buf3,MyFd.clifd[i].second.c_str(),buf2);
+		mysql_query(&mysql,str);
+		if(!mysql_query(&mysql,str))
+		{
+			write(confd,"0",1);
+		}
+		else
+		{
+			write(confd,"-1",2);
+		}		
+	}
 	
 	
 	else if(num1 == order["FriendList"])

@@ -6,13 +6,25 @@ void WorkData(int confd,int i,FD &MyFd)
 	
 	char buf[1024]={0};
 	printf("i = %d\n",i);
+	MYSQL mysql;
+	MYSQL_RES *result = NULL;
+	MYSQL_ROW row;
+	mysql_init(&mysql);
+   	if(mysql_real_connect(&mysql,"localhost","root","","chat",0,NULL,0)==NULL)
+   	{
+		printf("connect error: %s\n",mysql_error(&mysql));
+		return ;
+   	}
+   	else
+		printf("connected\n");
 	char buf1[1024]={0},buf2[1024]={0},buf3[1024]={0},buf4[1024]={0},buf5[1024]={0},str[1024]={0},sqlStr[1024]={0};
 	//断开连接
 	if(!read(confd,buf,sizeof(buf)))
 	{
 		memset(str,0,sizeof(str));
-		sprintf(str,"update user set online =1 where id ='%s';",MyFd.clifd[i].second.c_str());
-		mysql_query(&mysql,sqlStr);
+		sprintf(str,"update user set online = 0 where id ='%s';",MyFd.clifd[i].second.c_str());
+		printf("%s\n",str);
+		mysql_query(&mysql,str);
 		//allset和clifd中删除
 		FD_CLR(confd,&MyFd.allset);
 		MyFd.clifd.erase(MyFd.clifd.begin()+i);
@@ -29,19 +41,7 @@ void WorkData(int confd,int i,FD &MyFd)
 	int num1=atoi(buf1);printf("num = %s\n",buf1);
 	
 	
-	MYSQL mysql;
-	MYSQL_RES *result = NULL;
-	MYSQL_ROW row;
-    
-    
-	mysql_init(&mysql);
-   	if(mysql_real_connect(&mysql,"localhost","root","","chat",0,NULL,0)==NULL)
-   	{
-		printf("connect error: %s\n",mysql_error(&mysql));
-		return ;
-   	}
-   	else
-		printf("connected\n");
+
 
 	
 	if(num1 == order["Reg"])

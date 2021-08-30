@@ -4,6 +4,7 @@
 #include <sys/types.h>
 #include <mysql/mysql.h>
 #include <stdio.h>
+#include <iostream>
 #include <cstring>
 #include <unordered_map>
 #include <unistd.h>

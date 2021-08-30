@@ -406,7 +406,22 @@ void WorkData(int confd,int i,FD &MyFd)
 		}
 		mysql_free_result(result);
 	}
-	
+	else if(num1 == order["QueryFriendRequest"])
+	{
+		memset(str,0,sizeof(str));
+		sprintf(str,"select id1 from friend where id2 = '%s' and state = 0",MyFd.clifd[i].second.c_str());
+		mysql_query(&mysql,str);
+		result = mysql_store_result(&mysql);
+		memset(str,0,sizeof(str));
+		sprintf(str,"0");
+		while(row = mysql_fetch_row(result))
+		{
+			strcat(str,"|");
+			strcat(str,row[0]);
+		}
+		write(confd,str,strlen(str));
+		mysql_free_result(result);
+	}
 	
 	
 	mysql_close(&mysql);

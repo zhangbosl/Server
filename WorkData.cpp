@@ -30,7 +30,7 @@ void WorkData(int confd,int i,FD &MyFd)
     
     
 	mysql_init(&mysql);
-   	if(mysql_real_connect(&mysql,"localhost","lingxi","19410479","chat",0,NULL,0)==NULL)
+   	if(mysql_real_connect(&mysql,"localhost","root","","chat",0,NULL,0)==NULL)
    	{
 		printf("connect error: %s\n",mysql_error(&mysql));
 		return ;
@@ -421,6 +421,28 @@ void WorkData(int confd,int i,FD &MyFd)
 		}
 		write(confd,str,strlen(str));
 		mysql_free_result(result);
+	}
+	
+	
+	
+	
+	
+	else if(num1 == order["FriendList"])
+	{
+		memset(str,0,sizeof(str));
+		sprintf(str,"select id2 from friend where id1 = '%s' and state = 1",MyFd.clifd[i].second.c_str());
+		mysql_query(&mysql,str);
+		result = mysql_store_result(&mysql);
+		memset(str,0,sizeof(str));
+		sprintf(str,"0");
+		while(row = mysql_fetch_row(result))
+		{
+			strcat(str,"|");
+			strcat(str,row[0]);
+		}
+		write(confd,str,strlen(str));
+		mysql_free_result(result);	
+	
 	}
 	
 	

@@ -12,6 +12,6 @@
 #include "FD.h"
 
 void WorkData(int,int ,FD &);
-std::unordered_map<std::string,int>order{{"Reg",1},{"SignIn",2},{"ForgetPasswd1",3},{"ForgetPasswd2",4},{"DeleteId",5},{"ChangePasswd",10},{"ChangeQuestion",11},{"ChangeName",12},{"ChangePhoto",13},{"ChangeGender",14},{"ChangeBirth",15},{"ChangeSign",16},{"ViewName",20},{"ViewGender",22},{"ViewBirth",23},{"ViewSign",24},{"AddFriend",30},{"ViewFriendRequest",31},{"AgreeRequest",32},{"RejectRequest",33},{"DeleteFriend",34},{"ChangeRemark",35},{"FriendList",36},{"AddGroup",40},{"ViewGName",41},{"ViewGLeader",42},{"ViewGIntro",43}};
+std::unordered_map<std::string,int>order{{"Reg",1},{"SignIn",2},{"ForgetPasswd1",3},{"ForgetPasswd2",4},{"DeleteId",5},{"ChangePasswd",10},{"ChangeQuestion",11},{"ChangeName",12},{"ChangePhoto",13},{"ChangeGender",14},{"ChangeBirth",15},{"ChangeSign",16},{"ViewName",20},{"ViewGender",22},{"ViewBirth",23},{"ViewSign",24},{"AddFriend",30},{"ViewFriendRequest",31},{"AgreeRequest",32},{"RejectRequest",33},{"DeleteFriend",34},{"ChangeRemark",35},{"FriendList",36},{"AddGroup",40},{"ViewGName",41},{"ViewGLeader",42},{"ViewGIntro",43},{"ChangeGName",44},{"ChangeGIntro",45},{"ChangeGRemark",46},{"ExitGroup",47}};
 
 #endif

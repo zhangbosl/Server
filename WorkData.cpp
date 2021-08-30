@@ -533,9 +533,33 @@ void WorkData(int confd,int i,FD &MyFd)
 		mysql_free_result(result);	
 	
 	}
-	else if(num1 == order["AddGroup"]
+	else if(num1 == order["AddGroup"])
 	{
 	
+	
+	}
+	else if(num1 ==order["ViewGName"])
+	{
+	
+	}
+	else if(num1 ==order["ViewGLeader"])
+	{
+	
+	}
+	else if(num1 ==order["ViewGIntro"])
+	{
+	
+	}
+	else if(num1 ==order["ChangeGName"])
+	{
+	
+	}
+	else if(num1 ==order["ChangeGIntro"])
+	{
+	
+	}
+	else if(num1 ==order["ChangeGRemark"])
+	{
 	
 	}
 	

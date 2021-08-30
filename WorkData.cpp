@@ -540,15 +540,67 @@ void WorkData(int confd,int i,FD &MyFd)
 	}
 	else if(num1 ==order["ViewGName"])
 	{
-	
+		sscanf(buf,"%[^|]%*[|]%[^|]\n",buf1,buf2);
+		memset(str,0,sizeof(str));
+		sprintf(str,"select name from ginfor WHERE gid = '%s';",buf2);
+		mysql_query(&mysql,str);
+		result = mysql_store_result(&mysql);
+		row = mysql_fetch_row(result);
+		if(row)
+		{
+			memset(str,0,sizeof(str));
+			sprintf(str,"0|%s",row[0]);
+			printf("%s\n",str);
+			write(confd,str,strlen(str));
+		}
+		else
+		{
+			write(confd,"-1",2);
+		}
+		mysql_free_result(result);
+		
 	}
 	else if(num1 ==order["ViewGLeader"])
 	{
-	
+		sscanf(buf,"%[^|]%*[|]%[^|]\n",buf1,buf2);
+		memset(str,0,sizeof(str));
+		sprintf(str,"select uid from ginfor WHERE gid = '%s';",buf2);
+		mysql_query(&mysql,str);
+		result = mysql_store_result(&mysql);
+		row = mysql_fetch_row(result);
+		if(row)
+		{
+			memset(str,0,sizeof(str));
+			sprintf(str,"0|%s",row[0]);
+			printf("%s\n",str);
+			write(confd,str,strlen(str));
+		}
+		else
+		{
+			write(confd,"-1",2);
+		}
+		mysql_free_result(result);
 	}
 	else if(num1 ==order["ViewGIntro"])
 	{
-	
+		sscanf(buf,"%[^|]%*[|]%[^|]\n",buf1,buf2);
+		memset(str,0,sizeof(str));
+		sprintf(str,"select intro from ginfor WHERE gid = '%s';",buf2);
+		mysql_query(&mysql,str);
+		result = mysql_store_result(&mysql);
+		row = mysql_fetch_row(result);
+		if(row)
+		{
+			memset(str,0,sizeof(str));
+			sprintf(str,"0|%s",row[0]);
+			printf("%s\n",str);
+			write(confd,str,strlen(str));
+		}
+		else
+		{
+			write(confd,"-1",2);
+		}
+		mysql_free_result(result);
 	}
 	else if(num1 ==order["ChangeGName"])
 	{

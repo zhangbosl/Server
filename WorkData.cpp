@@ -417,7 +417,7 @@ void WorkData(int confd,int i,FD &MyFd)
 		}
 		mysql_free_result(result);
 	}
-	else if(num1 == order["QueryFriendRequest"])
+	else if(num1 == order["ViewFriendRequest"])
 	{
 		memset(str,0,sizeof(str));
 		sprintf(str,"select id1 from friend where id2 = '%s' and state = 0",MyFd.clifd[i].second.c_str());
@@ -531,6 +531,11 @@ void WorkData(int confd,int i,FD &MyFd)
 		}
 		write(confd,str,strlen(str));
 		mysql_free_result(result);	
+	
+	}
+	else if(num1 == order["AddGroup"]
+	{
+	
 	
 	}
 	

@@ -289,10 +289,6 @@ void WorkData(int confd,int i,FD &MyFd)
 		mysql_free_result(result);
 	}
 	
-	
-	
-	
-	
 	else if(num1 == order["ViewName"])
 	{
 		//buf2 -> ID
@@ -377,6 +373,9 @@ void WorkData(int confd,int i,FD &MyFd)
 			write(confd,"-1",2);
 		}
 	}
+	
+	
+	
 	mysql_close(&mysql);
 
 	

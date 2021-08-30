@@ -421,6 +421,7 @@ void WorkData(int confd,int i,FD &MyFd)
 	{
 		memset(str,0,sizeof(str));
 		sprintf(str,"select id1 from friend where id2 = '%s' and state = 0",MyFd.clifd[i].second.c_str());
+		printf("%s\n",str);
 		mysql_query(&mysql,str);
 		result = mysql_store_result(&mysql);
 		memset(str,0,sizeof(str));

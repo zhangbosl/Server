@@ -236,7 +236,7 @@ void WorkData(int confd,int i,FD &MyFd)
 		}
 		else
 		{
-			write(confd,"1",1);
+			write(confd,"-1",2);
 		}
 		mysql_free_result(result);
 	}
@@ -252,7 +252,7 @@ void WorkData(int confd,int i,FD &MyFd)
 		}
 		else
 		{
-			write(confd,"1",1);
+			write(confd,"-1",2);
 		}
 		mysql_free_result(result);
 	}
@@ -268,7 +268,7 @@ void WorkData(int confd,int i,FD &MyFd)
 		}
 		else
 		{
-			write(confd,"1",1);
+			write(confd,"-1",2);
 		}
 		mysql_free_result(result);
 	}
@@ -284,7 +284,7 @@ void WorkData(int confd,int i,FD &MyFd)
 		}
 		else
 		{
-			write(confd,"1",1);
+			write(confd,"-1",2);
 		}
 		mysql_free_result(result);
 	}
@@ -309,6 +309,7 @@ void WorkData(int confd,int i,FD &MyFd)
 		{
 			write(confd,"-1",2);
 		}
+		mysql_free_result(result);
 	}
 	else if(num1 == order["ViewGender"])
 	{
@@ -330,6 +331,7 @@ void WorkData(int confd,int i,FD &MyFd)
 		{
 			write(confd,"-1",2);
 		}
+		mysql_free_result(result);
 	}
 	else if(num1 == order["ViewBirth"])
 	{
@@ -351,6 +353,7 @@ void WorkData(int confd,int i,FD &MyFd)
 		{
 			write(confd,"-1",2);
 		}
+		mysql_free_result(result);
 	}
 	else if(num1 == order["ViewSign"])
 	{
@@ -372,6 +375,36 @@ void WorkData(int confd,int i,FD &MyFd)
 		{
 			write(confd,"-1",2);
 		}
+		mysql_free_result(result);
+	}
+	else if(num1 == order["AddFriend"])
+	{
+		//buf2 -> ID
+		sscanf(buf,"%[^|]%*[|]%[^|]\n",buf1,buf2);	
+		memset(str,0,sizeof(str));
+		sprintf(str,"select * from friend WHERE id1 = '%s' and id2 = '%s';",MyFd.clifd[i].second.c_str(),buf2);
+		mysql_query(&mysql,str);
+		result = mysql_store_result(&mysql);
+		row = mysql_fetch_row(result);
+		if(row)
+		{
+			printf("You have been friends\n");
+			write(confd,"-1",2);
+		}
+		else
+		{
+			memset(str,0,sizeof(str));
+			sprintf(str,"insert into friend (id1,id2) values('%s','%s');",MyFd.clifd[i].second.c_str(),buf2);
+			if(!mysql_query(&mysql,str))
+			{
+				write(confd,"0",1);
+			}
+			else
+			{
+				write(confd,"-1",2);
+			}
+		}
+		mysql_free_result(result);
 	}
 	
 	

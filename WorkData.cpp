@@ -6,17 +6,22 @@ void WorkData(int confd,int i,FD &MyFd)
 	
 	char buf[1024]={0};
 	printf("i = %d\n",i);
+	char buf1[1024]={0},buf2[1024]={0},buf3[1024]={0},buf4[1024]={0},buf5[1024]={0},str[1024]={0},sqlStr[1024]={0};
 	//断开连接
 	if(!read(confd,buf,sizeof(buf)))
 	{
+		memset(str,0,sizeof(str));
+		sprintf(str,"update user set online =1 where id ='%s';",MyFd.clifd[i].second.c_str());
+		mysql_query(&mysql,sqlStr);
 		//allset和clifd中删除
 		FD_CLR(confd,&MyFd.allset);
 		MyFd.clifd.erase(MyFd.clifd.begin()+i);
+
 		return ;
 	}
 	//如果读入了数据在buf中
 	printf("buf=%s\n",buf);
-	char buf1[1024]={0},buf2[1024]={0},buf3[1024]={0},buf4[1024]={0},buf5[1024]={0},str[1024]={0},sqlStr[1024]={0};
+	
 	
 	sscanf(buf,"%[^|]",buf1);
 	if(buf1[0]=='#')
@@ -460,8 +465,36 @@ void WorkData(int confd,int i,FD &MyFd)
 	}
 	else if(num1 == order["RejectRequest"])
 	{
-	
-		;
+		sscanf(buf,"%[^|]%*[|]%[^|]\n",buf1,buf2);	
+		memset(str,0,sizeof(str));
+		sprintf(str,"delete from friend WHERE id1 = '%s' and id2 = '%s' and state = 0;",buf2,MyFd.clifd[i].second.c_str());
+		if(!mysql_query(&mysql,str))
+		{
+			write(confd,"0",1);
+		}
+		else
+		{
+			write(confd,"-1",2);
+		}
+	}
+	else if(num1 == order["DeleteFriend"])
+	{
+		sscanf(buf,"%[^|]%*[|]%[^|]\n",buf1,buf2);	
+		memset(str,0,sizeof(str));
+		sprintf(str,"delete from friend WHERE id1 = '%s' and id2 = '%s';",buf2,MyFd.clifd[i].second.c_str());
+		if(!mysql_query(&mysql,str))
+		{
+			memset(str,0,sizeof(str));
+			sprintf(str,"delete from friend WHERE id1 = '%s' and id2 = '%s';",MyFd.clifd[i].second.c_str(),buf2);
+			if(!mysql_query(&mysql,str))
+				write(confd,"0",1);
+			else
+				write(confd,"-1",2);
+		}
+		else
+		{
+			write(confd,"-1",2);
+		}
 	}
 	
 	else if(num1 == order["ChangeRemark"])

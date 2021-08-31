@@ -3,7 +3,7 @@
 
 void WorkData(int confd,int i,FD &MyFd)
 {
-	
+
 	char buf[1024]={0};
 	printf("i = %d\n",i);
 	MYSQL mysql;
@@ -40,11 +40,9 @@ void WorkData(int confd,int i,FD &MyFd)
 	int num1=atoi(buf1);printf("num = %s\n",buf1);
 	
 	
-	
 	if(num1 == order["Reg"])
 	{
 		sscanf(buf,"%[^|]%*[|]%[^|]%*[|]%[^|]%*[|]%[^|]%*[|]%[^|]\n",buf1,buf2,buf3,buf4,buf5);
-        
 		sprintf(sqlStr,"insert into user (password,question,answer,online) values('%s','%s','%s',0)",buf3,buf4,buf5);
 		if(mysql_query(&mysql,sqlStr) != 0)
 		{
@@ -78,7 +76,6 @@ void WorkData(int confd,int i,FD &MyFd)
 		{
 			write(confd,"#001|1|regFailed",16);
 		}
-
 		mysql_free_result(result);
 	}
 	else if(num1 == order["SignIn"])
@@ -302,7 +299,6 @@ void WorkData(int confd,int i,FD &MyFd)
 		}
 		mysql_free_result(result);
 	}
-	
 	else if(num1 == order["ViewName"])
 	{
 		//buf2 -> ID
@@ -464,6 +460,7 @@ void WorkData(int confd,int i,FD &MyFd)
 			strcat(str,row[0]);
 		}
 		write(confd,str,strlen(str));
+		printf("%s\n",str);
 		mysql_free_result(result);
 	}
 	else if(num1 == order["AgreeRequest"])
@@ -482,7 +479,7 @@ void WorkData(int confd,int i,FD &MyFd)
 			{
 				memset(str,0,sizeof(str));
 				sprintf(str,"insert into friend (id1,id2,state) values('%s','%s',1);",MyFd.clifd[i].second.c_str(),buf2);
-				printf("%s\n");
+				printf("%s\n",str);
 				if(!mysql_query(&mysql,str))
 				{
 					memset(str,0,sizeof(str));
@@ -506,8 +503,7 @@ void WorkData(int confd,int i,FD &MyFd)
 					write(confd,str,strlen(str));	
 			}
 		}
-	
-	
+		mysql_free_result(result);
 	}
 	else if(num1 == order["RejectRequest"])
 	{
@@ -528,6 +524,7 @@ void WorkData(int confd,int i,FD &MyFd)
 			printf("%s\n",str);
 			write(confd,str,strlen(str));	
 		}
+		mysql_free_result(result);
 	}
 	else if(num1 == order["DeleteFriend"])
 	{
@@ -551,7 +548,6 @@ void WorkData(int confd,int i,FD &MyFd)
 				sprintf(str,"#%03d|1|Delete error",order["DeleteFriend"]);
 				printf("%s\n",str);
 				write(confd,str,strlen(str));	
-			
 			}
 		}
 		else
@@ -561,8 +557,8 @@ void WorkData(int confd,int i,FD &MyFd)
 			printf("%s\n",str);
 			write(confd,str,strlen(str));	
 		}
+		mysql_free_result(result);
 	}
-	
 	else if(num1 == order["ChangeRemark"])
 	{
 		//buf2 -> ID
@@ -583,9 +579,9 @@ void WorkData(int confd,int i,FD &MyFd)
 			sprintf(str,"#%03d|1|Change error",order["ChangeRemark"]);
 			printf("%s\n",str);
 			write(confd,str,strlen(str));	
-		}		
+		}
+		mysql_free_result(result);		
 	}
-	
 	else if(num1 == order["FriendList"])
 	{
 		memset(str,0,sizeof(str));
@@ -603,17 +599,42 @@ void WorkData(int confd,int i,FD &MyFd)
 			strcat(str,row[1]);
 		}
 		write(confd,str,strlen(str));
+		printf("%s\n",str);
 		mysql_free_result(result);	
-	
 	}
 	else if(num1 == order["SendMessage"])
 	{
-	/*
-		sscanf(buf,"%[^|]%*[|]%[^|]%*[|]%[^|]\n",buf1,buf2,buf3);	
+		//buf2-> message buf3->id
+		sscanf(buf,"%[^|]%*[|]%[^|]%*[|]%[^|]",buf1,buf2,buf3);	
 		memset(str,0,sizeof(str));
-		sprintf(str,"",);
-		
-	*/
+		sprintf(str,"insert into history (id1,id2,time,message) values('%s','%s','%s','%s');",MyFd.clifd[i].second.c_str(),buf3,GetTime().c_str(),buf2);
+		printf("%s\n",str);
+		mysql_query(&mysql,str);
+
+		memset(str,0,sizeof(str));
+		sprintf(str,"#%03d|0",order["SendMessage"]);
+		write(confd,str,strlen(str));
+		printf("%s\n",str);
+	}
+	else if(num1 == order["ReceMessage"])
+	{
+		//shijian message id
+		memset(str,0,sizeof(str));
+		sprintf(str,"select message,time,id1 from history where id2 = '%s' and state = 0;",MyFd.clifd[i].second.c_str());
+		mysql_query(&mysql,str);
+		result = mysql_store_result(&mysql);
+		while(row = mysql_fetch_row(result))
+		{
+			memset(str,0,sizeof(str));
+			sprintf(str,"#%03d|0|%s\n%s|%s",order["ReceMessage"],row[1],row[0],row[2]);
+			printf("%s\n",str);
+			write(confd,str,strlen(str));
+			memset(str,0,sizeof(str));
+			sprintf(str,"update history set state =1 where id2 ='%s' and time = '%s';",MyFd.clifd[i].second.c_str(),row[1]);
+			printf("%s\n",str);
+			mysql_query(&mysql,str);
+		}
+		mysql_free_result(result);
 	}
 	/*
 	else if(num1 == order["AddGroup"])
@@ -730,9 +751,19 @@ void WorkData(int confd,int i,FD &MyFd)
 			write(confd,"-1",2);
 		}	
 	}
-	
 	*/
 	mysql_close(&mysql);
+}
 
+std::string GetTime()
+{
+	time_t t;
+	t=time(NULL);
+	struct tm *m_time;
+	m_time=localtime(&t);
+	char szDateTime[100] = { 0 };
+	sprintf(szDateTime, "%04d-%02d-%02d %02d:%02d:%02d", 1900+m_time->tm_year, m_time->tm_mon,m_time->tm_mday, m_time->tm_hour, m_time->tm_min,m_time->tm_sec);
+	printf("%s\n",szDateTime);
+	return szDateTime;
 }
 //g++ MyServer.cpp Init.cpp FD.cpp WorkData.cpp -L/usr/lib/x86_64-linux-gnu/mysql -lmysqlclient

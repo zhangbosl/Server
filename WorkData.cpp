@@ -28,7 +28,6 @@ void WorkData(int confd,int i,FD &MyFd)
 		//allset和clifd中删除
 		FD_CLR(confd,&MyFd.allset);
 		MyFd.clifd.erase(MyFd.clifd.begin()+i);
-
 		return ;
 	}
 	//如果读入了数据在buf中
@@ -63,7 +62,7 @@ void WorkData(int confd,int i,FD &MyFd)
 		result=mysql_store_result(&mysql);
 		row = mysql_fetch_row(result);
 		
-		if(row)//&&row[2]==buf3&&row[3]==buf4&&row[4]==buf5
+		if(row)
 		{
 			write(confd,"#001|0|regSucess",16);
 			MyFd.clifd[i].second=row[0];
@@ -95,7 +94,7 @@ void WorkData(int confd,int i,FD &MyFd)
 		//sucess
 		if(row)
 		{
-			write(confd,"#002|0|",7);
+			write(confd,"#002|0|You have sign in",strlen("#002|0|You have sign in"));
 			MyFd.clifd[i].second = buf2;
 			memset(str,0,sizeof(str));
 			sprintf(str,"%s%s%s","update user set online = 1 where id = '",row[0],"';");
@@ -104,7 +103,7 @@ void WorkData(int confd,int i,FD &MyFd)
 		}
 		else
 		{
-			write(confd,"-1",2);
+			write(confd,"#002|1|Wrong account or password",strlen("#002|1|Wrong account or password"));
 		}
 		mysql_free_result(result);
 	}
@@ -121,13 +120,13 @@ void WorkData(int confd,int i,FD &MyFd)
 		if(row)
 		{
 			memset(str,0,sizeof(str));
-			sprintf(str,"%s%s","0|",row[2]);
+			sprintf(str,"#003|0|%s",row[2]);
 			MyFd.clifd[i].second = buf2;
 			write(confd,str,strlen(str));
 		}
 		else
 		{
-			write(confd,"-1",2);
+			write(confd,"#003|1|Wrong account",strlen("#003|1|Wrong account"));
 		}
 		mysql_free_result(result);
 	}
@@ -143,12 +142,12 @@ void WorkData(int confd,int i,FD &MyFd)
 		row = mysql_fetch_row(result);
 		if(row)
 		{
-			write(confd,"0",1);
+			write(confd,"#004|0|",strlen("#004|0|"));
 		
 		}
 		else
 		{
-			write(confd,"-1",2);
+			write(confd,"#004|1|Wrong Answer",strlen("#004|1|Wrong Answer"));
 		}
 		mysql_free_result(result);
 	}
@@ -159,11 +158,11 @@ void WorkData(int confd,int i,FD &MyFd)
 		printf("%s\n",str);
 		if(!mysql_query(&mysql,str))
 		{
-			write(confd,"0",1);
+			write(confd,"#005|0|",strlen("#005|0|"));
 		}
 		else
 		{
-			write(confd,"-1",2);
+			write(confd,"#005|1|Delete failed",strlen("#005|1|Delete failed"));
 		}
 		mysql_free_result(result);
 	}
@@ -183,17 +182,17 @@ void WorkData(int confd,int i,FD &MyFd)
 			sprintf(str,"%s%s%s%s%s","update user set password = '",buf3,"' where id = '",MyFd.clifd[i].second.c_str(),"';");
 			if(!mysql_query(&mysql,str))
 			{
-				write(confd,"0",1);
+				write(confd,"#010|0|",strlen("#010|0|"));
 			
 			}
 			else
 			{
-				write(confd,"-1",2);
+				write(confd,"#010|1|",strlen("#010|1|"));
 			}
 		}
 		else
 		{
-			write(confd,"-1",2);
+			write(confd,"#010|1|",strlen("#010|1|"));
 		}
 		mysql_free_result(result);
 	}
@@ -521,7 +520,7 @@ void WorkData(int confd,int i,FD &MyFd)
 		mysql_query(&mysql,str);
 		result = mysql_store_result(&mysql);
 		memset(str,0,sizeof(str));
-		sprintf(str,"0");
+		sprintf(str,"#036|0");
 		while(row = mysql_fetch_row(result))
 		{
 			strcat(str,"|");
@@ -530,6 +529,15 @@ void WorkData(int confd,int i,FD &MyFd)
 		write(confd,str,strlen(str));
 		mysql_free_result(result);	
 	
+	}
+	else if(num1 == order["SendMessage"])
+	{
+	/*
+		sscanf(buf,"%[^|]%*[|]%[^|]%*[|]%[^|]\n",buf1,buf2,buf3);	
+		memset(str,0,sizeof(str));
+		sprintf(str,"",);
+		
+	*/
 	}
 	/*
 	else if(num1 == order["AddGroup"])

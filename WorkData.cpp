@@ -62,8 +62,9 @@ void WorkData(int confd,int i,FD &MyFd)
 		
 		if(row)
 		{
-			write(confd,"#001|0|regSucess",16);
-			MyFd.clifd[i].second=row[0];
+
+			sprintf(str,"#001|0|%s",row[0]);
+			write(confd,str,strlen(str));
 			
 			sprintf(sqlStr,"insert into uinfor (id,name) values('%s','%s')",row[0],buf2);
 			if(mysql_query(&mysql,sqlStr) != 0)
@@ -108,55 +109,52 @@ void WorkData(int confd,int i,FD &MyFd)
 		}
 		mysql_free_result(result);
 	}
-	/*else if(num1 == order["ForgetPasswd1"])
+	else if(num1 ==order["ViewMyName"])
 	{
-		//buf2->id
-		sscanf(buf,"%[^|]%*[|]%s",buf1,buf2);
 		memset(str,0,sizeof(str));
-		sprintf(str,"%s%s%s","select * from user where id = '",buf2,"';");
+		sprintf(str,"select name from uinfor WHERE id = '%s';",MyFd.clifd[i].second.c_str());
 		printf("%s\n",str);
 		mysql_query(&mysql,str);
 		result = mysql_store_result(&mysql);
-		row = mysql_fetch_row(result);		
-		if(row)
-		{
-			memset(str,0,sizeof(str));
-			sprintf(str,"#%03d|0|%s",order["ForgetPasswd1"],row[2]);
-			MyFd.clifd[i].second = buf2;
-			write(confd,str,strlen(str));
-		}
-		else
-		{
-			memset(str,0,sizeof(str));
-			sprintf(str,"#%03d|1|Wrong account",order["ForgetPasswd1"]);
-			write(confd,str,strlen(str));
-		}
+		row = mysql_fetch_row(result);
+		memset(str,0,sizeof(str));
+		sprintf(str,"#%03d|%s",order["ViewMyName"],row[0]);
+		printf("%s\n",str);
+		write(confd,str,strlen(str));
+		
 		mysql_free_result(result);
 	}
-	else if(num1 == order["ForgetPasswd2"])
+	else if(num1 == order["ViewName"])
 	{
-		//buf2 -> answer
-		sscanf(buf,"%[^|]%*[|]%s",buf1,buf2);
+		//buf2 -> ID
+		sscanf(buf,"%[^|]%*[|]%[^|]\n",buf1,buf2);
 		memset(str,0,sizeof(str));
-		sprintf(str,"%s%s%s%s%s","select * from user where id ='",MyFd.clifd[i].second.c_str(),"' and answer = '",buf2,"';");
-		printf("%s\n",str);
+		sprintf(str,"select name from uinfor WHERE id = '%s';",buf2);
 		mysql_query(&mysql,str);
 		result = mysql_store_result(&mysql);
 		row = mysql_fetch_row(result);
 		if(row)
 		{
 			memset(str,0,sizeof(str));
-			sprintf(str,"#%03d|0",order["ForgetPasswd"]);
+			sprintf(str,"#%03d|%s|%s",order["ViewName"],row[0],buf2);
+			printf("%s\n",str);
 			write(confd,str,strlen(str));
 		}
 		else
 		{
 			memset(str,0,sizeof(str));
-			sprintf(str,"#%03d|1|Wrong Answer",order["ForgetPasswd"]);
+			sprintf(str,"#%03d|1|Wrong id",order["ViewName"]);
+			printf("%s\n",str);
 			write(confd,str,strlen(str));
 		}
 		mysql_free_result(result);
-	}*/
+	}
+	else if(num1 == order["ViewId"])
+	{
+
+	}
+
+
 	else if(num1 == order["DeleteId"])
 	{
 		memset(str,0,sizeof(str));
@@ -299,46 +297,6 @@ void WorkData(int confd,int i,FD &MyFd)
 		}
 		mysql_free_result(result);
 	}
-	else if(num1 ==order["ViewMyName"])
-	{
-		memset(str,0,sizeof(str));
-		sprintf(str,"select name from uinfor WHERE id = '%s';",MyFd.clifd[i].second.c_str());
-		printf("%s\n",str);
-		mysql_query(&mysql,str);
-		result = mysql_store_result(&mysql);
-		row = mysql_fetch_row(result);
-		memset(str,0,sizeof(str));
-		sprintf(str,"#%03d|%s",order["ViewMyName"],row[0]);
-		printf("%s\n",str);
-		write(confd,str,strlen(str));
-		
-		mysql_free_result(result);
-	}
-	else if(num1 == order["ViewName"])
-	{
-		//buf2 -> ID
-		sscanf(buf,"%[^|]%*[|]%[^|]\n",buf1,buf2);
-		memset(str,0,sizeof(str));
-		sprintf(str,"select name from uinfor WHERE id = '%s';",buf2);
-		mysql_query(&mysql,str);
-		result = mysql_store_result(&mysql);
-		row = mysql_fetch_row(result);
-		if(row)
-		{
-			memset(str,0,sizeof(str));
-			sprintf(str,"#%03d|0|%s",order["ViewName"],row[0]);
-			printf("%s\n",str);
-			write(confd,str,strlen(str));
-		}
-		else
-		{
-			memset(str,0,sizeof(str));
-			sprintf(str,"#%03d|1|Wrong id",order["ViewName"]);
-			printf("%s\n",str);
-			write(confd,str,strlen(str));
-		}
-		mysql_free_result(result);
-	}
 	else if(num1 == order["ViewGender"])
 	{
 		//buf2 -> ID
@@ -414,6 +372,66 @@ void WorkData(int confd,int i,FD &MyFd)
 		}
 		mysql_free_result(result);
 	}
+	else if(num1 == order["DeleteFriend"])
+	{
+		sscanf(buf,"%[^|]%*[|]%[^|]\n",buf1,buf2);	
+		memset(str,0,sizeof(str));
+		sprintf(str,"delete from friend WHERE id1 = '%s' and id2 = '%s';",buf2,MyFd.clifd[i].second.c_str());
+		if(!mysql_query(&mysql,str))
+		{
+			memset(str,0,sizeof(str));
+			sprintf(str,"delete from friend WHERE id1 = '%s' and id2 = '%s';",MyFd.clifd[i].second.c_str(),buf2);
+			if(!mysql_query(&mysql,str))
+			{
+				memset(str,0,sizeof(str));
+				sprintf(str,"#%03d|0|Delete success",order["DeleteFriend"]);
+				printf("%s\n",str);
+				write(confd,str,strlen(str));	
+			}
+			else
+			{
+				memset(str,0,sizeof(str));
+				sprintf(str,"#%03d|1|Delete error",order["DeleteFriend"]);
+				printf("%s\n",str);
+				write(confd,str,strlen(str));	
+			}
+		}
+		else
+		{
+			memset(str,0,sizeof(str));
+			sprintf(str,"#%03d|1|Delete error",order["DeleteFriend"]);
+			printf("%s\n",str);
+			write(confd,str,strlen(str));	
+		}
+		mysql_free_result(result);
+	}
+	else if(num1 == order["ChangeRemark"])
+	{
+		//buf2 -> ID
+		sscanf(buf,"%[^|]%*[|]%[^|]%*[|]%[^|]\n",buf1,buf2,buf3);	
+		memset(str,0,sizeof(str));
+		sprintf(str,"update friend set remark = '%s' where id1 = '%s' and id2= '%s';",buf3,MyFd.clifd[i].second.c_str(),buf2);
+		mysql_query(&mysql,str);
+		if(!mysql_query(&mysql,str))
+		{
+			memset(str,0,sizeof(str));
+			sprintf(str,"#%03d|0|Change success",order["ChangeRemark"]);
+			printf("%s\n",str);
+			write(confd,str,strlen(str));	
+		}
+		else
+		{
+			memset(str,0,sizeof(str));
+			sprintf(str,"#%03d|1|Change error",order["ChangeRemark"]);
+			printf("%s\n",str);
+			write(confd,str,strlen(str));	
+		}
+		mysql_free_result(result);		
+	}
+
+
+
+
 	else if(num1 == order["AddFriend"])
 	{
 		//buf2 -> ID
@@ -446,7 +464,11 @@ void WorkData(int confd,int i,FD &MyFd)
 			if(!mysql_query(&mysql,str))
 			{
 				memset(str,0,sizeof(str));
-				sprintf(str,"#%03d|0|Waiting for reply",order["AddFriend"]);
+				sprintf(str,"select name from uinfor where id = '%s';",buf2);
+				mysql_query(&mysql,str);
+				result = mysql_store_result(&mysql);
+				row = mysql_fetch_row(result);
+				sprintf(str,"#%03d|%s|%s",order["AddFriend"],row[0],buf2);
 				printf("%s\n",str);
 				write(confd,str,strlen(str));	
 			}
@@ -542,62 +564,6 @@ void WorkData(int confd,int i,FD &MyFd)
 			write(confd,str,strlen(str));	
 		}
 		mysql_free_result(result);
-	}
-	else if(num1 == order["DeleteFriend"])
-	{
-		sscanf(buf,"%[^|]%*[|]%[^|]\n",buf1,buf2);	
-		memset(str,0,sizeof(str));
-		sprintf(str,"delete from friend WHERE id1 = '%s' and id2 = '%s';",buf2,MyFd.clifd[i].second.c_str());
-		if(!mysql_query(&mysql,str))
-		{
-			memset(str,0,sizeof(str));
-			sprintf(str,"delete from friend WHERE id1 = '%s' and id2 = '%s';",MyFd.clifd[i].second.c_str(),buf2);
-			if(!mysql_query(&mysql,str))
-			{
-				memset(str,0,sizeof(str));
-				sprintf(str,"#%03d|0|Delete success",order["DeleteFriend"]);
-				printf("%s\n",str);
-				write(confd,str,strlen(str));	
-			}
-			else
-			{
-				memset(str,0,sizeof(str));
-				sprintf(str,"#%03d|1|Delete error",order["DeleteFriend"]);
-				printf("%s\n",str);
-				write(confd,str,strlen(str));	
-			}
-		}
-		else
-		{
-			memset(str,0,sizeof(str));
-			sprintf(str,"#%03d|1|Delete error",order["DeleteFriend"]);
-			printf("%s\n",str);
-			write(confd,str,strlen(str));	
-		}
-		mysql_free_result(result);
-	}
-	else if(num1 == order["ChangeRemark"])
-	{
-		//buf2 -> ID
-		sscanf(buf,"%[^|]%*[|]%[^|]%*[|]%[^|]\n",buf1,buf2,buf3);	
-		memset(str,0,sizeof(str));
-		sprintf(str,"update friend set remark = '%s' where id1 = '%s' and id2= '%s';",buf3,MyFd.clifd[i].second.c_str(),buf2);
-		mysql_query(&mysql,str);
-		if(!mysql_query(&mysql,str))
-		{
-			memset(str,0,sizeof(str));
-			sprintf(str,"#%03d|0|Change success",order["ChangeRemark"]);
-			printf("%s\n",str);
-			write(confd,str,strlen(str));	
-		}
-		else
-		{
-			memset(str,0,sizeof(str));
-			sprintf(str,"#%03d|1|Change error",order["ChangeRemark"]);
-			printf("%s\n",str);
-			write(confd,str,strlen(str));	
-		}
-		mysql_free_result(result);		
 	}
 	else if(num1 == order["FriendList"])
 	{
@@ -790,3 +756,52 @@ std::string GetTime()
 		}	
 	}
 	*/
+/*else if(num1 == order["ForgetPasswd1"])
+	{
+		//buf2->id
+		sscanf(buf,"%[^|]%*[|]%s",buf1,buf2);
+		memset(str,0,sizeof(str));
+		sprintf(str,"%s%s%s","select * from user where id = '",buf2,"';");
+		printf("%s\n",str);
+		mysql_query(&mysql,str);
+		result = mysql_store_result(&mysql);
+		row = mysql_fetch_row(result);		
+		if(row)
+		{
+			memset(str,0,sizeof(str));
+			sprintf(str,"#%03d|0|%s",order["ForgetPasswd1"],row[2]);
+			MyFd.clifd[i].second = buf2;
+			write(confd,str,strlen(str));
+		}
+		else
+		{
+			memset(str,0,sizeof(str));
+			sprintf(str,"#%03d|1|Wrong account",order["ForgetPasswd1"]);
+			write(confd,str,strlen(str));
+		}
+		mysql_free_result(result);
+	}
+	else if(num1 == order["ForgetPasswd2"])
+	{
+		//buf2 -> answer
+		sscanf(buf,"%[^|]%*[|]%s",buf1,buf2);
+		memset(str,0,sizeof(str));
+		sprintf(str,"%s%s%s%s%s","select * from user where id ='",MyFd.clifd[i].second.c_str(),"' and answer = '",buf2,"';");
+		printf("%s\n",str);
+		mysql_query(&mysql,str);
+		result = mysql_store_result(&mysql);
+		row = mysql_fetch_row(result);
+		if(row)
+		{
+			memset(str,0,sizeof(str));
+			sprintf(str,"#%03d|0",order["ForgetPasswd"]);
+			write(confd,str,strlen(str));
+		}
+		else
+		{
+			memset(str,0,sizeof(str));
+			sprintf(str,"#%03d|1|Wrong Answer",order["ForgetPasswd"]);
+			write(confd,str,strlen(str));
+		}
+		mysql_free_result(result);
+	}*/

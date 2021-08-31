@@ -14,15 +14,18 @@
 std::string GetTime();
 void WorkData(int,int ,FD &);
 std::unordered_map<std::string,int>order\
-{{"Reg",1},{"SignIn",2},{"ForgetPasswd1",3},{"ForgetPasswd2",4},{"DeleteId",5},\
+{{"Reg",1},{"SignIn",2},\
+{"ViewName",50},{"ViewId",51},{"ViewMyName",25},{"FriendList",34},\
+{"AddFriend",30},{"ViewFriendRequest",31},{"AgreeRequest",32},{"RejectRequest",35},\
+{"SendMessage",40},{"ReceMessage",41},\
+{"ForgetPasswd1",3},{"ForgetPasswd2",4},{"DeleteId",5},\
 {"ChangePasswd",10},{"ChangeQuestion",11},{"ChangeName",12},{"ChangePhoto",13},\
 {"ChangeGender",14},{"ChangeBirth",15},{"ChangeSign",16},\
-{"ViewName",20},{"ViewGender",22},{"ViewBirth",23},{"ViewSign",24},\
-{"ViewMyName",25},\
-{"AddFriend",30},{"ViewFriendRequest",31},{"AgreeRequest",32},{"RejectRequest",33},\
-{"DeleteFriend",36},{"ChangeRemark",35},{"FriendList",34},{"SendMessage",40},{"ReceMessage",41},\
+{"ViewGender",22},{"ViewBirth",23},{"ViewSign",24},\
+{"DeleteFriend",36},{"ChangeRemark",11111},\
 {"AddGroup",49},{"ViewGName",55},{"ViewGLeader",42},\
 {"ViewGIntro",43},{"ChangeGName",44},{"ChangeGIntro",45},{"ChangeGRemark",46},{"ExitGroup",47}};
-//34 haoyou mingzi id  
-//
+
+// reg signin viewName viewMyName FriendList 
+//AddFriend ViewFriendRequest Aggree Reject SendMessage ReceMessage
 #endif

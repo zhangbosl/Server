@@ -589,15 +589,18 @@ void WorkData(int confd,int i,FD &MyFd)
 	else if(num1 == order["FriendList"])
 	{
 		memset(str,0,sizeof(str));
-		sprintf(str,"select id2 from friend where id1 = '%s' and state = 1",MyFd.clifd[i].second.c_str());
+		sprintf(str,"select a.id2, b.name from friend a join uinfor b on a.id2 = b.id where a.id1 = '%s' and a.state = 1;",MyFd.clifd[i].second.c_str());
+		printf("%s\n",str);
 		mysql_query(&mysql,str);
 		result = mysql_store_result(&mysql);
 		memset(str,0,sizeof(str));
-		sprintf(str,"#%03d|0",order["ViewFriendRequest"]);
+		sprintf(str,"#%03d|0",order["FriendList"]);
 		while(row = mysql_fetch_row(result))
 		{
 			strcat(str,"|");
 			strcat(str,row[0]);
+			strcat(str,"|");
+			strcat(str,row[1]);
 		}
 		write(confd,str,strlen(str));
 		mysql_free_result(result);	

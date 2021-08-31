@@ -94,16 +94,20 @@ void WorkData(int confd,int i,FD &MyFd)
 		//sucess
 		if(row)
 		{
-			write(confd,"#002|0|You have sign in",strlen("#002|0|You have sign in"));
-			MyFd.clifd[i].second = buf2;
 			memset(str,0,sizeof(str));
 			sprintf(str,"%s%s%s","update user set online = 1 where id = '",row[0],"';");
 			printf("%s\n",str);
 			mysql_query(&mysql,str);
+			MyFd.clifd[i].second = buf2;
+			memset(str,0,sizeof(str));
+			sprintf(str,"#%03d|0|You have sign in",order["SignIn"]);
+			write(confd,str,strlen(str));
 		}
 		else
 		{
-			write(confd,"#002|1|Wrong account or password",strlen("#002|1|Wrong account or password"));
+			memset(str,0,sizeof(str));
+			sprintf(str,"#%03d|1|Wrong account or password",order["SignIn"]);
+			write(confd,str,strlen(str));
 		}
 		mysql_free_result(result);
 	}
@@ -120,13 +124,15 @@ void WorkData(int confd,int i,FD &MyFd)
 		if(row)
 		{
 			memset(str,0,sizeof(str));
-			sprintf(str,"#003|0|%s",row[2]);
+			sprintf(str,"#%03d|0|%s",order["ForgetPasswd1"],row[2]);
 			MyFd.clifd[i].second = buf2;
 			write(confd,str,strlen(str));
 		}
 		else
 		{
-			write(confd,"#003|1|Wrong account",strlen("#003|1|Wrong account"));
+			memset(str,0,sizeof(str));
+			sprintf(str,"#%03d|1|Wrong account",order["ForgetPasswd1"]);
+			write(confd,str,strlen(str));
 		}
 		mysql_free_result(result);
 	}
@@ -142,12 +148,15 @@ void WorkData(int confd,int i,FD &MyFd)
 		row = mysql_fetch_row(result);
 		if(row)
 		{
-			write(confd,"#004|0|",strlen("#004|0|"));
-		
+			memset(str,0,sizeof(str));
+			sprintf(str,"#%03d|0",order["ForgetPasswd"]);
+			write(confd,str,strlen(str));
 		}
 		else
 		{
-			write(confd,"#004|1|Wrong Answer",strlen("#004|1|Wrong Answer"));
+			memset(str,0,sizeof(str));
+			sprintf(str,"#%03d|1|Wrong Answer",order["ForgetPasswd"]);
+			write(confd,str,strlen(str));
 		}
 		mysql_free_result(result);
 	}
@@ -158,11 +167,15 @@ void WorkData(int confd,int i,FD &MyFd)
 		printf("%s\n",str);
 		if(!mysql_query(&mysql,str))
 		{
-			write(confd,"#005|0|",strlen("#005|0|"));
+			memset(str,0,sizeof(str));
+			sprintf(str,"#%03d|0",order["DeleteId"]);
+			write(confd,str,strlen(str));
 		}
 		else
 		{
-			write(confd,"#005|1|Delete failed",strlen("#005|1|Delete failed"));
+			memset(str,0,sizeof(str));
+			sprintf(str,"#%03d|1|Delete failed",order["DeleteId"]);
+			write(confd,str,strlen(str));
 		}
 		mysql_free_result(result);
 	}
@@ -303,13 +316,16 @@ void WorkData(int confd,int i,FD &MyFd)
 		if(row)
 		{
 			memset(str,0,sizeof(str));
-			sprintf(str,"0|%s",row[0]);
+			sprintf(str,"#%03d|0|%s",order["ViewName"],row[0]);
 			printf("%s\n",str);
 			write(confd,str,strlen(str));
 		}
 		else
 		{
-			write(confd,"-1",2);
+			memset(str,0,sizeof(str));
+			sprintf(str,"#%03d|1|Wrong id",order["ViewName"]);
+			printf("%s\n",str);
+			write(confd,str,strlen(str));
 		}
 		mysql_free_result(result);
 	}
@@ -325,13 +341,16 @@ void WorkData(int confd,int i,FD &MyFd)
 		if(row)
 		{
 			memset(str,0,sizeof(str));
-			sprintf(str,"0|%s",row[0]);
+			sprintf(str,"#%03d|0|%s",order["ViewGender"],row[0]);
 			printf("%s\n",str);
 			write(confd,str,strlen(str));
 		}
 		else
 		{
-			write(confd,"-1",2);
+			memset(str,0,sizeof(str));
+			sprintf(str,"#%03d|1|Wrong id",order["ViewGender"]);
+			printf("%s\n",str);
+			write(confd,str,strlen(str));
 		}
 		mysql_free_result(result);
 	}
@@ -347,13 +366,16 @@ void WorkData(int confd,int i,FD &MyFd)
 		if(row)
 		{
 			memset(str,0,sizeof(str));
-			sprintf(str,"0|%s",row[0]);
+			sprintf(str,"#%03d|0|%s",order["ViewBirth"],row[0]);
 			printf("%s\n",str);
 			write(confd,str,strlen(str));
 		}
 		else
 		{
-			write(confd,"-1",2);
+			memset(str,0,sizeof(str));
+			sprintf(str,"#%03d|1|Wrong id",order["ViewBirth"]);
+			printf("%s\n",str);
+			write(confd,str,strlen(str));
 		}
 		mysql_free_result(result);
 	}
@@ -369,13 +391,16 @@ void WorkData(int confd,int i,FD &MyFd)
 		if(row)
 		{
 			memset(str,0,sizeof(str));
-			sprintf(str,"0|%s",row[0]);
+			sprintf(str,"#%03d|0|%s",order["ViewSign"],row[0]);
 			printf("%s\n",str);
 			write(confd,str,strlen(str));
 		}
 		else
 		{
-			write(confd,"-1",2);
+			memset(str,0,sizeof(str));
+			sprintf(str,"#%03d|1|Wrong id",order["ViewBirth"]);
+			printf("%s\n",str);
+			write(confd,str,strlen(str));
 		}
 		mysql_free_result(result);
 	}
@@ -391,12 +416,17 @@ void WorkData(int confd,int i,FD &MyFd)
 		if(row)
 		{	if(atoi(row[0]) == 1)
 			{
-				printf("You have been friends\n");
-				write(confd,"-1",2);			
+				memset(str,0,sizeof(str));
+				sprintf(str,"#%03d|1|You have been friends",order["AddFriend"]);
+				printf("%s\n",str);
+				write(confd,str,strlen(str));		
 			}
 			else
 			{
-				write(confd,"0",1);
+				memset(str,0,sizeof(str));
+				sprintf(str,"#%03d|0|Waiting for reply",order["AddFriend"]);
+				printf("%s\n",str);
+				write(confd,str,strlen(str));	
 			}
 		}
 		else
@@ -405,11 +435,17 @@ void WorkData(int confd,int i,FD &MyFd)
 			sprintf(str,"insert into friend (id1,id2) values('%s','%s');",MyFd.clifd[i].second.c_str(),buf2);
 			if(!mysql_query(&mysql,str))
 			{
-				write(confd,"0",1);
+				memset(str,0,sizeof(str));
+				sprintf(str,"#%03d|0|Waiting for reply",order["AddFriend"]);
+				printf("%s\n",str);
+				write(confd,str,strlen(str));	
 			}
 			else
 			{
-				write(confd,"-1",2);
+				memset(str,0,sizeof(str));
+				sprintf(str,"#%03d|1|Insert error",order["AddFriend"]);
+				printf("%s\n",str);
+				write(confd,str,strlen(str));	
 			}
 		}
 		mysql_free_result(result);
@@ -422,7 +458,7 @@ void WorkData(int confd,int i,FD &MyFd)
 		mysql_query(&mysql,str);
 		result = mysql_store_result(&mysql);
 		memset(str,0,sizeof(str));
-		sprintf(str,"0");
+		sprintf(str,"#%03d|0",order["ViewFriendRequest"]);
 		while(row = mysql_fetch_row(result))
 		{
 			strcat(str,"|");
@@ -520,7 +556,7 @@ void WorkData(int confd,int i,FD &MyFd)
 		mysql_query(&mysql,str);
 		result = mysql_store_result(&mysql);
 		memset(str,0,sizeof(str));
-		sprintf(str,"#036|0");
+		sprintf(str,"#%03d|0",order["ViewFriendRequest"]);
 		while(row = mysql_fetch_row(result))
 		{
 			strcat(str,"|");

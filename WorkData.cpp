@@ -196,7 +196,6 @@ void WorkData(int confd,int i,FD &MyFd)
 			if(!mysql_query(&mysql,str))
 			{
 				write(confd,"#010|0|",strlen("#010|0|"));
-			
 			}
 			else
 			{
@@ -226,16 +225,16 @@ void WorkData(int confd,int i,FD &MyFd)
 			printf("%s\n",str);
 			if(!mysql_query(&mysql,str))
 			{
-				write(confd,"0",1);
+				write(confd,"#011|0|",strlen("#011|0|"));
 			}
 			else
 			{
-				write(confd,"-1",2);
+				write(confd,"#011|1|",strlen("#011|1|"));
 			}
 		}
 		else
 		{
-			write(confd,"-1",2);
+			write(confd,"#011|1|",strlen("#011|1|"));
 		}
 		mysql_free_result(result);
 	}
@@ -247,11 +246,11 @@ void WorkData(int confd,int i,FD &MyFd)
 		printf("%s\n",sqlStr);
 		if(!mysql_query(&mysql,sqlStr))
 		{
-			write(confd,"0",1);
+			write(confd,"#012|0|",strlen("#012|0|"));
 		}
 		else
 		{
-			write(confd,"-1",2);
+			write(confd,"#012|1|",strlen("#012|1|"));
 		}
 		mysql_free_result(result);
 	}
@@ -263,11 +262,11 @@ void WorkData(int confd,int i,FD &MyFd)
 		printf("%s\n",sqlStr);
 		if(!mysql_query(&mysql,sqlStr))
 		{
-			write(confd,"0",1);
+			write(confd,"#013|0|",strlen("#013|0|"));
 		}
 		else
 		{
-			write(confd,"-1",2);
+			write(confd,"#013|1|",strlen("#013|1|"));
 		}
 		mysql_free_result(result);
 	}
@@ -279,11 +278,11 @@ void WorkData(int confd,int i,FD &MyFd)
 		printf("%s\n",sqlStr);
 		if(!mysql_query(&mysql,sqlStr))
 		{
-			write(confd,"0",1);
+			write(confd,"#014|0|",strlen("#014|0|"));
 		}
 		else
 		{
-			write(confd,"-1",2);
+			write(confd,"#014|1|",strlen("#014|1|"));
 		}
 		mysql_free_result(result);
 	}
@@ -295,11 +294,11 @@ void WorkData(int confd,int i,FD &MyFd)
 		printf("%s\n",sqlStr);
 		if(!mysql_query(&mysql,sqlStr))
 		{
-			write(confd,"0",1);
+			write(confd,"#015|0|",strlen("#015|0|"));
 		}
 		else
 		{
-			write(confd,"-1",2);
+			write(confd,"#015|1|",strlen("#015|1|"));
 		}
 		mysql_free_result(result);
 	}
@@ -485,13 +484,26 @@ void WorkData(int confd,int i,FD &MyFd)
 				sprintf(str,"insert into friend (id1,id2,state) values('%s','%s',1);",MyFd.clifd[i].second.c_str(),buf2);
 				printf("%s\n");
 				if(!mysql_query(&mysql,str))
-					write(confd,"0",1);
+				{
+					memset(str,0,sizeof(str));
+					sprintf(str,"#%03d|0|You have been friends",order["AgreeRequest"]);
+					printf("%s\n",str);
+					write(confd,str,strlen(str));	
+				}
 				else
-					write(confd,"-1",2);
+				{
+					memset(str,0,sizeof(str));
+					sprintf(str,"#%03d|1|Agree error",order["AgreeRequest"]);
+					printf("%s\n",str);
+					write(confd,str,strlen(str));					
+				}
 			}
 			else
 			{
-				write(confd,"-1",2);
+					memset(str,0,sizeof(str));
+					sprintf(str,"#%03d|1|Agree error",order["AgreeRequest"]);
+					printf("%s\n",str);
+					write(confd,str,strlen(str));	
 			}
 		}
 	
@@ -504,11 +516,17 @@ void WorkData(int confd,int i,FD &MyFd)
 		sprintf(str,"delete from friend WHERE id1 = '%s' and id2 = '%s' and state = 0;",buf2,MyFd.clifd[i].second.c_str());
 		if(!mysql_query(&mysql,str))
 		{
-			write(confd,"0",1);
+			memset(str,0,sizeof(str));
+			sprintf(str,"#%03d|0|Reject success",order["RejectRequest"]);
+			printf("%s\n",str);
+			write(confd,str,strlen(str));	
 		}
 		else
 		{
-			write(confd,"-1",2);
+			memset(str,0,sizeof(str));
+			sprintf(str,"#%03d|1|Reject error",order["RejectRequest"]);
+			printf("%s\n",str);
+			write(confd,str,strlen(str));	
 		}
 	}
 	else if(num1 == order["DeleteFriend"])
@@ -521,13 +539,27 @@ void WorkData(int confd,int i,FD &MyFd)
 			memset(str,0,sizeof(str));
 			sprintf(str,"delete from friend WHERE id1 = '%s' and id2 = '%s';",MyFd.clifd[i].second.c_str(),buf2);
 			if(!mysql_query(&mysql,str))
-				write(confd,"0",1);
+			{
+				memset(str,0,sizeof(str));
+				sprintf(str,"#%03d|0|Delete success",order["DeleteFriend"]);
+				printf("%s\n",str);
+				write(confd,str,strlen(str));	
+			}
 			else
-				write(confd,"-1",2);
+			{
+				memset(str,0,sizeof(str));
+				sprintf(str,"#%03d|1|Delete error",order["DeleteFriend"]);
+				printf("%s\n",str);
+				write(confd,str,strlen(str));	
+			
+			}
 		}
 		else
 		{
-			write(confd,"-1",2);
+			memset(str,0,sizeof(str));
+			sprintf(str,"#%03d|1|Delete error",order["DeleteFriend"]);
+			printf("%s\n",str);
+			write(confd,str,strlen(str));	
 		}
 	}
 	
@@ -540,14 +572,19 @@ void WorkData(int confd,int i,FD &MyFd)
 		mysql_query(&mysql,str);
 		if(!mysql_query(&mysql,str))
 		{
-			write(confd,"0",1);
+			memset(str,0,sizeof(str));
+			sprintf(str,"#%03d|0|Change success",order["ChangeRemark"]);
+			printf("%s\n",str);
+			write(confd,str,strlen(str));	
 		}
 		else
 		{
-			write(confd,"-1",2);
+			memset(str,0,sizeof(str));
+			sprintf(str,"#%03d|1|Change error",order["ChangeRemark"]);
+			printf("%s\n",str);
+			write(confd,str,strlen(str));	
 		}		
 	}
-	
 	
 	else if(num1 == order["FriendList"])
 	{

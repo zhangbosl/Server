@@ -108,7 +108,7 @@ void WorkData(int confd,int i,FD &MyFd)
 		}
 		mysql_free_result(result);
 	}
-	else if(num1 == order["ForgetPasswd1"])
+	/*else if(num1 == order["ForgetPasswd1"])
 	{
 		//buf2->id
 		sscanf(buf,"%[^|]%*[|]%s",buf1,buf2);
@@ -156,7 +156,7 @@ void WorkData(int confd,int i,FD &MyFd)
 			write(confd,str,strlen(str));
 		}
 		mysql_free_result(result);
-	}
+	}*/
 	else if(num1 == order["DeleteId"])
 	{
 		memset(str,0,sizeof(str));
@@ -297,6 +297,21 @@ void WorkData(int confd,int i,FD &MyFd)
 		{
 			write(confd,"#015|1|",strlen("#015|1|"));
 		}
+		mysql_free_result(result);
+	}
+	else if(num1 ==order["ViewMyName"])
+	{
+		memset(str,0,sizeof(str));
+		sprintf(str,"select name from uinfor WHERE id = '%s';",MyFd.clifd[i].second.c_str());
+		printf("%s\n",str);
+		mysql_query(&mysql,str);
+		result = mysql_store_result(&mysql);
+		row = mysql_fetch_row(result);
+		memset(str,0,sizeof(str));
+		sprintf(str,"#%03d|%s",order["ViewMyName"],row[0]);
+		printf("%s\n",str);
+		write(confd,str,strlen(str));
+		
 		mysql_free_result(result);
 	}
 	else if(num1 == order["ViewName"])
@@ -448,14 +463,16 @@ void WorkData(int confd,int i,FD &MyFd)
 	else if(num1 == order["ViewFriendRequest"])
 	{
 		memset(str,0,sizeof(str));
-		sprintf(str,"select id1 from friend where id2 = '%s' and state = 0",MyFd.clifd[i].second.c_str());
+		sprintf(str,"select a.id1,b.name from friend a join uinfor b on a.id1 = b.id where a.id2 = '%s' and state = 0",MyFd.clifd[i].second.c_str());
 		printf("%s\n",str);
 		mysql_query(&mysql,str);
 		result = mysql_store_result(&mysql);
 		memset(str,0,sizeof(str));
-		sprintf(str,"#%03d|0",order["ViewFriendRequest"]);
+		sprintf(str,"#%03d",order["ViewFriendRequest"]);
 		while(row = mysql_fetch_row(result))
 		{
+			strcat(str,"|");
+			strcat(str,row[1]);
 			strcat(str,"|");
 			strcat(str,row[0]);
 		}
@@ -590,13 +607,13 @@ void WorkData(int confd,int i,FD &MyFd)
 		mysql_query(&mysql,str);
 		result = mysql_store_result(&mysql);
 		memset(str,0,sizeof(str));
-		sprintf(str,"#%03d|0",order["FriendList"]);
+		sprintf(str,"#%03d",order["FriendList"]);
 		while(row = mysql_fetch_row(result))
 		{
 			strcat(str,"|");
-			strcat(str,row[0]);
-			strcat(str,"|");
 			strcat(str,row[1]);
+			strcat(str,"|");
+			strcat(str,row[0]);
 		}
 		write(confd,str,strlen(str));
 		printf("%s\n",str);
@@ -616,17 +633,19 @@ void WorkData(int confd,int i,FD &MyFd)
 		write(confd,str,strlen(str));
 		printf("%s\n",str);
 	}
+
 	else if(num1 == order["ReceMessage"])
 	{
-		//shijian message id
+		//buf2->id
+		sscanf(buf,"%[^|]%*[|]%[^|]",buf1,buf2);
 		memset(str,0,sizeof(str));
-		sprintf(str,"select message,time,id1 from history where id2 = '%s' and state = 0;",MyFd.clifd[i].second.c_str());
+		sprintf(str,"select message,time from history where id2 = '%s' and state = 0 and id1 = '%s';",MyFd.clifd[i].second.c_str(),buf2);
 		mysql_query(&mysql,str);
 		result = mysql_store_result(&mysql);
 		while(row = mysql_fetch_row(result))
 		{
 			memset(str,0,sizeof(str));
-			sprintf(str,"#%03d|0|%s\n%s|%s",order["ReceMessage"],row[1],row[0],row[2]);
+			sprintf(str,"#%03d|%s|%s\n%s",order["ReceMessage"],buf2,row[1],row[0]);
 			printf("%s\n",str);
 			write(confd,str,strlen(str));
 			memset(str,0,sizeof(str));
@@ -636,6 +655,25 @@ void WorkData(int confd,int i,FD &MyFd)
 		}
 		mysql_free_result(result);
 	}
+	mysql_close(&mysql);
+}
+
+std::string GetTime()
+{
+	time_t t;
+	t=time(NULL);
+	struct tm *m_time;
+	m_time=localtime(&t);
+	char szDateTime[100] = { 0 };
+	sprintf(szDateTime, "%04d-%02d-%02d %02d:%02d:%02d", 1900+m_time->tm_year, m_time->tm_mon,m_time->tm_mday, m_time->tm_hour, m_time->tm_min,m_time->tm_sec);
+	printf("time is %s\n",szDateTime);
+	return szDateTime;
+}
+//g++ MyServer.cpp Init.cpp FD.cpp WorkData.cpp -L/usr/lib/x86_64-linux-gnu/mysql -lmysqlclient
+
+
+
+
 	/*
 	else if(num1 == order["AddGroup"])
 	{
@@ -752,18 +790,3 @@ void WorkData(int confd,int i,FD &MyFd)
 		}	
 	}
 	*/
-	mysql_close(&mysql);
-}
-
-std::string GetTime()
-{
-	time_t t;
-	t=time(NULL);
-	struct tm *m_time;
-	m_time=localtime(&t);
-	char szDateTime[100] = { 0 };
-	sprintf(szDateTime, "%04d-%02d-%02d %02d:%02d:%02d", 1900+m_time->tm_year, m_time->tm_mon,m_time->tm_mday, m_time->tm_hour, m_time->tm_min,m_time->tm_sec);
-	printf("%s\n",szDateTime);
-	return szDateTime;
-}
-//g++ MyServer.cpp Init.cpp FD.cpp WorkData.cpp -L/usr/lib/x86_64-linux-gnu/mysql -lmysqlclient

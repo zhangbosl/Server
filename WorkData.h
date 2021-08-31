@@ -18,9 +18,11 @@ std::unordered_map<std::string,int>order\
 {"ChangePasswd",10},{"ChangeQuestion",11},{"ChangeName",12},{"ChangePhoto",13},\
 {"ChangeGender",14},{"ChangeBirth",15},{"ChangeSign",16},\
 {"ViewName",20},{"ViewGender",22},{"ViewBirth",23},{"ViewSign",24},\
+{"ViewMyName",25},\
 {"AddFriend",30},{"ViewFriendRequest",31},{"AgreeRequest",32},{"RejectRequest",33},\
-{"DeleteFriend",34},{"ChangeRemark",35},{"FriendList",36},{"SendMessage",40},{"ReceMessage",41},\
+{"DeleteFriend",36},{"ChangeRemark",35},{"FriendList",34},{"SendMessage",40},{"ReceMessage",41},\
 {"AddGroup",49},{"ViewGName",55},{"ViewGLeader",42},\
 {"ViewGIntro",43},{"ChangeGName",44},{"ChangeGIntro",45},{"ChangeGRemark",46},{"ExitGroup",47}};
-
+//34 haoyou mingzi id  
+//
 #endif

@@ -155,10 +155,11 @@ void WorkData(int confd,int i,FD &MyFd)
 		sscanf(buf,"%[^|]%*[|]%[^|]\n",buf1,buf2);	
 		memset(str,0,sizeof(str));
 		sprintf(str,"select id from uinfor WHERE name = '%s';",buf2);	
+		printf("%s\n",str);
 		mysql_query(&mysql,str);
 		result = mysql_store_result(&mysql);
 		memset(str,0,sizeof(str));
-		sprintf(str,"#%03d",order["ViewId"]);
+		sprintf(str,"#%03d",order["ViewName"]);
 		while(row = mysql_fetch_row(result))
 		{
 			strcat(str,"|");

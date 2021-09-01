@@ -151,7 +151,24 @@ void WorkData(int confd,int i,FD &MyFd)
 	}
 	else if(num1 == order["ViewId"])
 	{
-
+		//buf2 -> name
+		sscanf(buf,"%[^|]%*[|]%[^|]\n",buf1,buf2);	
+		memset(str,0,sizeof(str));
+		sprintf(str,"select id from uinfor WHERE name = '%s';",buf2);	
+		mysql_query(&mysql,str);
+		result = mysql_store_result(&mysql);
+		memset(str,0,sizeof(str));
+		sprintf(str,"#%03d",order["ViewId"]);
+		while(row = mysql_fetch_row(result))
+		{
+			strcat(str,"|");
+			strcat(str,buf2);
+			strcat(str,"|");
+			strcat(str,row[0]);		
+		}
+		write(confd,str,sizeof(str));
+		printf("%s\n",str);
+		mysql_free_result(result);	
 	}
 
 
@@ -568,7 +585,7 @@ void WorkData(int confd,int i,FD &MyFd)
 	else if(num1 == order["FriendList"])
 	{
 		memset(str,0,sizeof(str));
-		sprintf(str,"select a.id2, b.name from friend a join uinfor b on a.id2 = b.id where a.id1 = '%s' and a.state = 1;",MyFd.clifd[i].second.c_str());
+		sprintf(str,"select a.id2, b.name from friend a join uinfor b on a.id2 = b.id where a.id1 = '%s' and a.state = 1 order by a.id2 asc;",MyFd.clifd[i].second.c_str());
 		printf("%s\n",str);
 		mysql_query(&mysql,str);
 		result = mysql_store_result(&mysql);

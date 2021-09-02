@@ -30,7 +30,6 @@ std::unordered_map<std::string,int>order\
 {"ViewGIntro",43},{"ChangeGName",44},{"ChangeGIntro",45},{"ChangeGRemark",46},{"ExitGroup",47},\
 {"FriendPhoto",26},{"SendPhoto",98},{"SendFile",97},{"RecvFile",99}};
 
-
 // reg signin viewName viewMyName FriendList 
 //AddFriend ViewFriendRequest Aggree Reject SendMessage ReceMessage
 #endif

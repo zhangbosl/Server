@@ -4,7 +4,7 @@
 void WorkData(int confd,int i,FD &MyFd)
 {
 
-	char buf[1024]={0};
+	char buf[1024]={0},buf1[1024]={0},buf2[1024]={0},str[1024]={0};
 	printf("i = %d\n",i);
 	MYSQL mysql;
 	MYSQL_RES *result = NULL;
@@ -17,7 +17,6 @@ void WorkData(int confd,int i,FD &MyFd)
    	}
    	else
 		printf("connected\n");
-	char buf1[1024]={0},buf2[1024]={0},buf3[1024]={0},buf4[1024]={0},buf5[1024]={0},str[1024]={0},sqlStr[1024]={0};
 	//断开连接
 	if(!read(confd,buf,sizeof(buf)))
 	{
@@ -33,14 +32,37 @@ void WorkData(int confd,int i,FD &MyFd)
 	}
 	//如果读入了数据在buf中
 	printf("buf=%s\n",buf);
+	int len = strlen(buf);
 	
+	while(strlen(buf)>4)
+	{
+		sscanf(buf,"%*[#]%[^#]%s",buf1,buf2);
+		strcpy(buf,buf2);//printf("debug:%d %s\n%s\n",strlen(buf),buf,buf1);
+		sscanf(buf1,"%[^|]",buf2);
+		if(buf2[0]=='#')
+			sscanf(buf2,"#%s",buf2);
+		int num1=atoi(buf2);printf("num = %s\n",buf2);
+		DealData(confd,i,MyFd,buf1,num1);
+		sleep(0.5);
+	}
 	
-	sscanf(buf,"%[^|]",buf1);
-	if(buf1[0]=='#')
-		sscanf(buf1,"#%s",buf1);
-	int num1=atoi(buf1);printf("num = %s\n",buf1);
-	
-	
+	mysql_close(&mysql);
+}
+void DealData(int confd,int i,FD &MyFd,char *buf,int num1)
+{
+	MYSQL mysql;
+	MYSQL_RES *result = NULL;
+	MYSQL_ROW row;
+	mysql_init(&mysql);
+   	if(mysql_real_connect(&mysql,"localhost","lingxi","19410479","chat",0,NULL,0)==NULL)
+   	{
+		printf("connect error: %s\n",mysql_error(&mysql));
+		return ;
+   	}
+   	else
+		printf("connected\n");
+	char tail[10]={"&&&&"};
+	char buf1[1024]={0},buf2[1024]={0},buf3[1024]={0},buf4[1024]={0},buf5[1024]={0},str[1024]={0},sqlStr[1024]={0};
 	if(num1 == order["Reg"])
 	{
 		sscanf(buf,"%[^|]%*[|]%[^|]%*[|]%[^|]%*[|]%[^|]%*[|]%[^|]\n",buf1,buf2,buf3,buf4,buf5);
@@ -114,6 +136,7 @@ void WorkData(int confd,int i,FD &MyFd)
 		row = mysql_fetch_row(result);
 		memset(str,0,sizeof(str));
 		sprintf(str,"#%03d|%s",order["ViewMyName"],row[0]);
+		strcat(str,tail);
 		printf("%s\n",str);
 		write(confd,str,strlen(str));
 		mysql_free_result(result);
@@ -166,8 +189,6 @@ void WorkData(int confd,int i,FD &MyFd)
 		printf("%s\n",str);
 		mysql_free_result(result);	
 	}
-
-
 	else if(num1 == order["DeleteId"])
 	{
 		memset(str,0,sizeof(str));
@@ -501,6 +522,7 @@ void WorkData(int confd,int i,FD &MyFd)
 			strcat(str,"|");
 			strcat(str,row[0]);
 		}
+			strcat(str,tail);
 		write(confd,str,strlen(str));
 		printf("%s\n",str);
 		mysql_free_result(result);
@@ -522,16 +544,16 @@ void WorkData(int confd,int i,FD &MyFd)
 				memset(str,0,sizeof(str));
 				sprintf(str,"insert into friend (id1,id2,state) values('%s','%s',1);",MyFd.clifd[i].second.c_str(),buf2);
 				if(!mysql_query(&mysql,str))
-					write(confd,"0",1);
+					;//write(confd,"0",1);
 				else
-					write(confd,"-1",2);
+					;//write(confd,"-1",2);
 			}
 			else
 			{
-				write(confd,"-1",2);
+				;//write(confd,"-1",2);
 			}
 		}
-		mysql_free_result(result);
+// 		mysql_free_result(result);
 	}
 	else if(num1 == order["RejectRequest"])
 	{
@@ -618,8 +640,8 @@ void WorkData(int confd,int i,FD &MyFd)
 		//buf2-> message buf3->id
 		sscanf(buf,"%[^|]%*[|]%[^|]%*[|]%[^|]",buf1,buf2,buf3);	
 		memset(str,0,sizeof(str));
-		const char * htime = GetTime().c_str();
-		sprintf(str,"insert into history (id1,id2,time,message) values('%s','%s','%s','%s');",MyFd.clifd[i].second.c_str(),buf3,htime,buf2);
+		std::string htime = GetTime();//printf("time:%s,%s\n",htime,GetTime().c_str());
+		sprintf(str,"insert into history (id1,id2,time,message,state) values('%s','%s','%s','%s',0);",MyFd.clifd[i].second.c_str(),buf3,htime.c_str(),buf2);
 		printf("%s\n",str);
 		mysql_query(&mysql,str);
 		//clicd find
@@ -633,9 +655,9 @@ void WorkData(int confd,int i,FD &MyFd)
 				printf("%s\n",str);
 				write(MyFd.clifd[j].first,str,strlen(str));
 				memset(str,0,sizeof(str));
-				sprintf(str,"update history set state = 1 where id1 = '%s' and id2 = '%s' and time = '%s';",MyFd.clifd[i].second.c_str(),buf3,htime);
-				printf("%s\n",str);
-				mysql_query(&mysql,str);
+				sprintf(str,"update history set state = 1 where id1 = '%s' and id2 = '%s' and time = '%s';",MyFd.clifd[i].second.c_str(),buf3,htime.c_str());
+				printf("no%s\n",str);
+				//mysql_query(&mysql,str);
 				break;
 			}
 		}
@@ -644,86 +666,169 @@ void WorkData(int confd,int i,FD &MyFd)
 	else if(num1 == order["ReceMessage"])
 	{
 		//buf2->id
-		sscanf(buf,"%[^|]%*[|]%[^|]",buf1,buf2);
-		memset(str,0,sizeof(str));
-		sprintf(str,"select message,time from history where id2 = '%s' and state = 0 and id1 = '%s';",MyFd.clifd[i].second.c_str(),buf2);
-		mysql_query(&mysql,str);
-		result = mysql_store_result(&mysql);
-		while(row = mysql_fetch_row(result))
-		{
+		sscanf(buf,"%[^|]%*[|]%[^|]%*[|]%[^|]",buf1,buf2,buf3);
+		if(strcmp(buf3,"0"))
+		{printf("read\n");
 			memset(str,0,sizeof(str));
-			sprintf(str,"#%03d|%s|%s\n%s",order["ReceMessage"],buf2,row[1],row[0]);
-			printf("%s\n",str);
-			write(confd,str,strlen(str));
+			sprintf(str,"select message,time from history where id2 = '%s' and state = 0 and id1 = '%s';",MyFd.clifd[i].second.c_str(),buf2);
+			mysql_query(&mysql,str);
+			result = mysql_store_result(&mysql);
+			while(row = mysql_fetch_row(result))
+			{
+				memset(str,0,sizeof(str));
+				sprintf(str,"#%03d|%s|%s\n%s",order["ReceMessage"],buf2,row[1],row[0]);
+				printf("%s\n",str);
+				write(confd,str,strlen(str));
+				memset(str,0,sizeof(str));
+				sprintf(str,"update history set state =1 where id2 ='%s' and time = '%s';",MyFd.clifd[i].second.c_str(),row[1]);
+				printf("no%s\n",str);
+				//mysql_query(&mysql,str);
+			}
+		}
+		else
+		{printf("close\n");
 			memset(str,0,sizeof(str));
-			sprintf(str,"update history set state =1 where id2 ='%s' and time = '%s';",MyFd.clifd[i].second.c_str(),row[1]);
-			printf("%s\n",str);
+			sprintf(str,"update history set state = 1 where id2 = '%s' and state = 0 and id1 = '%s';",MyFd.clifd[i].second.c_str(),buf2);
 			mysql_query(&mysql,str);
 		}
 		mysql_free_result(result);
 	}
 	else if(num1==order["FriendPhoto"])
 	{
-		sscanf(buf,"%[^|]%*[|]%[^|]\n",buf1,buf2);	
+		sscanf(buf,"%[^|]%*[|]%[^|]",buf1,buf2);	
 		memset(str,0,sizeof(str));
-		sprintf(str,"select photo from uinfor where id='%s'",buf2);
+		sprintf(str,"select photo,ptype from uinfor where id='%s'",buf2);printf("%s\n",str);
 		mysql_query(&mysql,str);
-		result = mysql_store_result(&mysql);
-		long unsigned int* lengths = mysql_fetch_lengths(result);
-		
-		sprintf(str,"#090|0|%ld",lengths[0]);
-		write(confd,str,strlen(str));//+7+sizeof(long unsigned int)
-		
-		int i,packet=1024;
-		for(i=0;i+packet+1<lengths[0];i+=packet)
+		result = mysql_store_result(&mysql);//printf("%d\n",result);
+		row = mysql_fetch_row(result);//printf("%d\n",*row);
+		if(*row)
 		{
-			memcpy(str,"#090|1|", 7);
-			memcpy(str+7,row[0]+i, packet);
-			write(confd,str,packet+7);//+7+sizeof(long unsigned int)
+			long unsigned int* lengths = mysql_fetch_lengths(result);
+			sprintf(str,"#026|0|%ld.%s",lengths[0],row[1]);
+			strcat(str,tail);
+			write(confd,str,strlen(str));//+7+sizeof(long unsigned int)
+			printf("ok\n");
+			
+			int j,packet=1000;
+			for(j=0;j+packet+1<lengths[0];j+=packet)
+			{
+				memcpy(str,"#026|1|", 7);
+				memcpy(str+7,row[0]+j, packet);
+				write(confd,str,packet+7);//+7+sizeof(long unsigned int)
+			}
+			memcpy(str,"#026|1|", 7);
+			memcpy(str+7,row[0]+j, lengths[0]-j+1);
+			memcpy(str+lengths[0]-j+8,"@@*##", 5);//printf("j:%d\n",lengths[0]-j+12);
+			write(confd,str,lengths[0]-j+13);//+7+sizeof(long unsigned int)
+			printf("ok\n");
 		}
-		memcpy(str,"#090|1|", 7);
-		memcpy(str+7,row[0]+i, lengths[0]-i+1);
-		memcpy(str+lengths[0]-i+8,"@@*##", 5);
-		write(confd,str,lengths[0]-i+13);//+7+sizeof(long unsigned int)
+		else
+		{
+			sprintf(str,"#026|2");
+			strcat(str,tail);
+			write(confd,str,strlen(str));//+7+sizeof(long unsigned int)
+		}
+		mysql_free_result(result);	
+	}
+	else if(num1==order["SendPhoto"])
+	{printf("sp\n");
+		char data[1024*1024]={0},chunk[1024*1024]={0},sqlStr[1024*1024]={0};
+		sscanf(buf,"%[^|]%*[|]%[^.]%*[.]%[^|]%*[|]%[^|]",buf1,buf2,buf3,buf4);//098|name|type|size
+		printf("1:%s  2:%s  3:%s  4:%s\n",buf1,buf2,buf3,buf4);
+		int size=atoi(buf4);
+		sleep(1);
+		fd_set tmpset;
+		FD_SET(confd,&tmpset);
+		int nready = select(confd+1,&tmpset,NULL,NULL,NULL);//printf("n:%d  size:%d\n",nready,size);
+		if(!read(confd,data,size))
+		{printf("readimagefailed\n");
+			/*memset(str,0,sizeof(str));
+			sprintf(str,"update user set online = 0 where id ='%s';",MyFd.clifd[i].second.c_str());
+			printf("%s\n",str);
+			mysql_query(&mysql,str);
+			//allset和clifd中删除
+			FD_CLR(confd,&MyFd.allset);
+			MyFd.clifd.erase(MyFd.clifd.begin()+i);*/
+
+			return ;
+		}//printf("spdata %d= %s\n",strlen(data),data);
+		
+		/*FILE *fp = fopen("save.jpg", "wb");
+		fwrite(data, size, 1, fp);
+		fclose(fp);*/
+		
+		memset(str,0,sizeof(str));
+		//fputs(data,fq);
+		mysql_real_escape_string(&mysql, chunk, data, size);
+		//sprintf(sqlStr,"insert into exm (name,ptype,image) values('%s','%s','%s')",buf2,buf3,chunk);
+		sprintf(sqlStr,"update uinfor set ptype = '%s', photo = '%s' where id = '%s'",buf3,chunk,MyFd.clifd[i].second.c_str());
+		if(mysql_query(&mysql,sqlStr) != 0)
+		{
+			printf("query error: %s\n",mysql_error(&mysql));
+			//return ;
+		}
+		
+		result=mysql_store_result(&mysql);
+		
+				FILE *fp = fopen("save2.jpg", "wb");
+				sprintf(sqlStr,"SELECT photo,ptype FROM uinfor where id = '%s'",MyFd.clifd[i].second.c_str());
+				//sprintf(sqlStr,"SELECT image,id FROM exm order by id desc limit 1");
+				mysql_query(&mysql, sqlStr);
+				//mysql_query(conn, "SELECT photo,id FROM uinfor where id =1527");
+				result = mysql_store_result(&mysql);
+				row = mysql_fetch_row(result);printf("%s\n",row[1]);
+				//std::cout<<row[0]<<std::endl;
+				long unsigned int* lengths = mysql_fetch_lengths(result);
+				fwrite(row[0], lengths[0], 1, fp);
+				fclose(fp);
 		mysql_free_result(result);	
 	}
 	else if(num1==order["SendFile"])
-	{
-		//读文件，存文件
-		char lstr[10*1024]={0};
-		mysql_query(&mysql, "SELECT image,id FROM exm order by id desc limit 1");
-		result = mysql_store_result(&mysql);
-		row = mysql_fetch_row(result);//printf("%s\n",row[1]);
-		long unsigned int* lengths = mysql_fetch_lengths(result);
-		//std::cout<<lengths[0]<<row[0]<<std::endl;
-		
-		sprintf(lstr,"#099|0|%ld",lengths[0]);
-		write(confd,lstr,strlen(lstr));//+7+sizeof(long unsigned int)
-		printf("%s\n",lstr);
+	{printf("sp\n");
+		char data[1024*1024]={0},chunk[1024*1024]={0},sqlStr[1024*1024]={0};
+		sscanf(buf,"%[^|]%*[|]%[^|]%*[|]%[^.]%*[.]%[^|]%*[|]%[^|]",buf1,buf2,buf3,buf4,buf5);//098|id|name.type|size
+		printf("1:%s  2:%s  3:%s  4:%s\n",buf1,buf2,buf3,buf4);
+		int size=atoi(buf5);
 		sleep(1);
-		int i,packet=1024;
-		for(i=0;i+packet+1<lengths[0];i+=packet)
+		fd_set tmpset;
+		FD_SET(confd,&tmpset);
+		int nready = select(confd+1,&tmpset,NULL,NULL,NULL);//printf("n:%d  size:%d\n",nready,size);
+		if(!read(confd,data,size))
 		{
-			//memset(str,0,sizeof(str));
-			memcpy(lstr,"#099|1|", 7);
-			memcpy(lstr+7,row[0]+i, packet);
-			//memcpy(lstr+1031,"@@*##", 5);
-			//printf("%s\n",str);
-			write(confd,lstr,packet+7);//+7+sizeof(long unsigned int)
-			sleep(0.8);
+			printf("readfilefailed\n");
+			return ;
 		}
-		printf("ok\n");
-		memset(lstr,0,sizeof(lstr));
-		memcpy(lstr,"#099|1|", 7);
-		memcpy(lstr+7,row[0]+i, lengths[0]-i+1);
-		memcpy(lstr+lengths[0]-i+8,"@@*##", 5);
-		write(confd,lstr,lengths[0]-i+13);//+7+sizeof(long unsigned int)
+		
+		memset(str,0,sizeof(str));
+		//fputs(data,fq);
+		mysql_real_escape_string(&mysql, chunk, data, size);
+		std::string htime = GetTime();//printf("time:%s,%s\n",htime,GetTime().c_str());
+		sprintf(str,"insert into history (id1,id2,time,data,type,state) values('%s','%s','%s','%s','%s',0);",MyFd.clifd[i].second.c_str(),buf2,htime.c_str(),chunk,buf4);
+		//sprintf(sqlStr,"insert into exm (name,ptype,image) values('%s','%s','%s')",buf2,buf3,chunk);
+		//sprintf(sqlStr,"update uinfor set ptype = '%s', photo = '%s' where id = '%s'",buf3,chunk,MyFd.clifd[i].second.c_str());
+		if(mysql_query(&mysql,sqlStr) != 0)
+		{
+			printf("query error: %s\n",mysql_error(&mysql));
+			//return ;
+		}
+		
+		result=mysql_store_result(&mysql);
+				/*FILE *fp = fopen("save2.jpg", "wb");
+				sprintf(sqlStr,"SELECT photo,ptype FROM uinfor where id = '%s'",MyFd.clifd[i].second.c_str());
+				//sprintf(sqlStr,"SELECT image,id FROM exm order by id desc limit 1");
+				mysql_query(&mysql, sqlStr);
+				//mysql_query(conn, "SELECT photo,id FROM uinfor where id =1527");
+				result = mysql_store_result(&mysql);
+				row = mysql_fetch_row(result);printf("%s\n",row[1]);
+				//std::cout<<row[0]<<std::endl;
+				long unsigned int* lengths = mysql_fetch_lengths(result);
+				fwrite(row[0], lengths[0], 1, fp);
+				fclose(fp);*/
 		mysql_free_result(result);	
-		//write(confd,b_str,strlen(b_str));
-		//write(confd,row[0],lengths[0]);//+7+sizeof(long unsigned int)
 	}
 	else if(num1==order["RecvFile"])
-	{		
+	{
+		//sscanf(buf,"%[^|]%*[|]%[^|]*[|]%[^|]",buf1,buf2,buf3);	//size.jpg
 		char lstr[10*1024]={0};
 		mysql_query(&mysql, "SELECT image,id FROM exm order by id desc limit 1");
 		result = mysql_store_result(&mysql);
@@ -731,11 +836,11 @@ void WorkData(int confd,int i,FD &MyFd)
 		long unsigned int* lengths = mysql_fetch_lengths(result);
 		//std::cout<<lengths[0]<<row[0]<<std::endl;
 		
-		sprintf(lstr,"#099|0|%ld",lengths[0]);
+		sprintf(lstr,"#099|0|%ld|%s",lengths[0],row[1]);
 		write(confd,lstr,strlen(lstr));//+7+sizeof(long unsigned int)
-		printf("%s\n",lstr);
+		printf("rf%s\n",lstr);
 		sleep(1);
-		int i,packet=1024;
+		int i,packet=1000;
 		for(i=0;i+packet+1<lengths[0];i+=packet)
 		{
 			//memset(str,0,sizeof(str));
@@ -756,6 +861,8 @@ void WorkData(int confd,int i,FD &MyFd)
 		//write(confd,b_str,strlen(b_str));
 		//write(confd,row[0],lengths[0]);//+7+sizeof(long unsigned int)
 	}
+	else
+		;
 	mysql_close(&mysql);
 }
 std::string GetTime()
@@ -765,7 +872,7 @@ std::string GetTime()
 	struct tm *m_time;
 	m_time=localtime(&t);
 	char szDateTime[100] = { 0 };
-	sprintf(szDateTime, "%04d-%02d-%02d %02d:%02d:%02d", 1900+m_time->tm_year, m_time->tm_mon,m_time->tm_mday, m_time->tm_hour, m_time->tm_min,m_time->tm_sec);
+	sprintf(szDateTime, "%04d-%02d-%02d %02d:%02d:%02d", 1900+m_time->tm_year, m_time->tm_mon+1,m_time->tm_mday, m_time->tm_hour, m_time->tm_min,m_time->tm_sec);
 	printf("time is %s\n",szDateTime);
 	return szDateTime;
 }

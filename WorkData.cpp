@@ -767,7 +767,6 @@ void DealData(int confd,int i,FD &MyFd,char *buf,int num1)
 			printf("query error: %s\n",mysql_error(&mysql));
 			//return ;
 		}
-		
 		result=mysql_store_result(&mysql);
 		
 				FILE *fp = fopen("save2.jpg", "wb");
